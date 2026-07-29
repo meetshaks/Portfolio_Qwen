@@ -1,0 +1,2297 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pallab Sarkar — Full-Stack Developer & Digital Designer</title>
+    <meta name="description" content="Pallab Sarkar is a full-stack developer and digital designer based in Lisbon, crafting brand identities, web applications, and digital experiences.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300..600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #F5F4F0;
+            --bg-alt: #EBE9E1;
+            --text: #181818;
+            --text-muted: #666666;
+            --accent: #4A5D4E;
+            --accent-hover: #3A4032;
+            --card: #FFFFFF;
+            --border: #E0DCD3;
+            --serif: 'Fraunces', serif;
+            --sans: 'Inter', sans-serif;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+            --nav-height: 88px;
+        }
+
+        [data-theme="dark"] {
+            --bg: #121212;
+            --bg-alt: #1A1A1A;
+            --text: #EAEAEA;
+            --text-muted: #A0A0A0;
+            --accent: #A3B19B;
+            --accent-hover: #C2D1C0;
+            --card: #1E1E1E;
+            --border: #2A2A2A;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        html { scroll-behavior: smooth; scroll-padding-top: var(--nav-height); }
+        
+        body {
+            font-family: var(--sans);
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body.loading { overflow: hidden; height: 100vh; }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; }
+        a { color: inherit; text-decoration: none; transition: color 0.3s ease; }
+        img { max-width: 100%; display: block; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+        .container { max-width: 1440px; margin: 0 auto; padding: 0 2rem; }
+        section { padding: 8rem 0; position: relative; }
+
+        /* =========================================
+           INTRO ANIMATION
+        ========================================= */
+        .intro {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--bg);
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        .intro.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .intro-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+        .intro-name {
+            font-family: var(--serif);
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 300;
+            display: flex;
+            gap: 0.5rem;
+            overflow: hidden;
+        }
+        .intro-letter {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(100%);
+            animation: letterReveal 0.8s var(--ease-out) forwards;
+        }
+        .intro-space { width: 1rem; }
+        
+        @keyframes letterReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .intro-line {
+            width: 0;
+            height: 1px;
+            background: var(--text);
+            animation: lineExpand 2s var(--ease-in-out) 0.4s forwards;
+        }
+        @keyframes lineExpand {
+            to { width: min(400px, 80vw); }
+        }
+        
+        .intro-meta {
+            display: flex;
+            justify-content: space-between;
+            width: min(400px, 80vw);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+            opacity: 0;
+            animation: fadeIn 0.6s ease 1s forwards;
+        }
+        .intro-counter { font-variant-numeric: tabular-nums; }
+        
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* =========================================
+           PREMIUM NAVBAR
+        ========================================= */
+        .nav {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 1320px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 1000;
+            background: rgba(245, 244, 240, 0.7);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 100px;
+            box-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.04),
+                0 1px 2px rgba(0, 0, 0, 0.02);
+            transition: all 0.4s var(--ease-out);
+        }
+        [data-theme="dark"] .nav {
+            background: rgba(18, 18, 18, 0.7);
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.2),
+                0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .nav.scrolled {
+            top: 12px;
+            background: rgba(245, 244, 240, 0.9);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+        }
+        [data-theme="dark"] .nav.scrolled {
+            background: rgba(18, 18, 18, 0.9);
+        }
+
+        .nav-logo {
+            font-family: var(--serif);
+            font-size: 1.4rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+        .nav-logo::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            transition: transform 0.3s var(--ease-out);
+        }
+        .nav-logo:hover::before {
+            transform: scale(1.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.03);
+            padding: 4px;
+            border-radius: 100px;
+            position: relative;
+        }
+        [data-theme="dark"] .nav-links { background: rgba(255, 255, 255, 0.04); }
+        
+        .nav-links a {
+            position: relative;
+            font-size: 0.88rem;
+            font-weight: 500;
+            padding: 8px 18px;
+            border-radius: 100px;
+            color: var(--text-muted);
+            transition: color 0.3s ease, background 0.3s ease;
+            white-space: nowrap;
+        }
+        .nav-links a:hover {
+            color: var(--text);
+        }
+        .nav-links a.active {
+            color: var(--bg);
+            background: var(--text);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        [data-theme="dark"] .nav-links a.active {
+            color: #121212;
+            background: var(--accent);
+        }
+
+        .nav-right { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
+        
+        .pill {
+            display: none;
+            align-items: center; gap: 0.5rem;
+            font-size: 0.72rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid var(--border);
+            padding: 6px 14px; border-radius: 100px;
+        }
+        [data-theme="dark"] .pill { background: rgba(255, 255, 255, 0.05); }
+        .pill-dot {
+            width: 6px; height: 6px; background: #4CAF50; border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.6); }
+            70% { box-shadow: 0 0 0 8px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+        @media (min-width: 1100px) { .pill { display: flex; } }
+
+        .theme-toggle {
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s var(--ease-out);
+            color: var(--text);
+        }
+        [data-theme="dark"] .theme-toggle { background: rgba(255, 255, 255, 0.05); }
+        .theme-toggle:hover { 
+            transform: rotate(180deg); 
+            background: var(--text); 
+            color: var(--bg); 
+            border-color: var(--text); 
+        }
+        .theme-icon-wrap { position: relative; width: 18px; height: 18px; }
+        .theme-icon-wrap svg {
+            position: absolute; inset: 0;
+            transition: opacity 0.35s var(--ease-out), transform 0.5s var(--ease-out);
+        }
+        .icon-sun { opacity: 1; transform: rotate(0deg) scale(1); }
+        .icon-moon { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+        [data-theme="dark"] .icon-sun { opacity: 0; transform: rotate(90deg) scale(0.5); }
+        [data-theme="dark"] .icon-moon { opacity: 1; transform: rotate(0deg) scale(1); }
+
+        .btn-primary {
+            background: var(--text); color: var(--bg);
+            padding: 10px 22px; border-radius: 100px;
+            font-size: 0.88rem; font-weight: 500;
+            transition: transform 0.3s var(--ease-out), background 0.3s;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        .btn-primary:hover { 
+            transform: translateY(-2px); 
+            background: var(--accent); 
+            color: #fff; 
+        }
+        .nav .btn-primary { display: none; }
+        @media (min-width: 900px) { .nav .btn-primary { display: inline-block; } }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.6);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+        [data-theme="dark"] .menu-toggle { background: rgba(255,255,255,0.05); }
+        .menu-toggle span {
+            display: block;
+            width: 16px;
+            height: 1.5px;
+            background: var(--text);
+            position: relative;
+            transition: all 0.3s var(--ease-out);
+        }
+        .menu-toggle span::before,
+        .menu-toggle span::after {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 1.5px;
+            background: var(--text);
+            left: 0;
+            transition: all 0.3s var(--ease-out);
+        }
+        .menu-toggle span::before { top: -5px; }
+        .menu-toggle span::after { top: 5px; }
+        .menu-toggle.active span { background: transparent; }
+        .menu-toggle.active span::before { top: 0; transform: rotate(45deg); }
+        .menu-toggle.active span::after { top: 0; transform: rotate(-45deg); }
+
+        /* Mobile Navigation Drawer */
+        .mobile-nav {
+            position: fixed;
+            top: 96px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            width: calc(100% - 32px);
+            max-width: 400px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 1.5rem;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+        .mobile-nav.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .mobile-nav a {
+            display: block;
+            padding: 14px 16px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+        }
+        .mobile-nav a:hover, .mobile-nav a.active {
+            background: var(--bg-alt);
+            color: var(--text);
+        }
+        .mobile-nav a.active {
+            background: var(--text);
+            color: var(--bg);
+        }
+        [data-theme="dark"] .mobile-nav a.active {
+            background: var(--accent);
+            color: #121212;
+        }
+
+        @media (max-width: 900px) {
+            .nav-links, .nav .btn-primary { display: none; }
+            .menu-toggle { display: flex; }
+        }
+        @media (max-width: 600px) {
+            .nav { padding: 0 1rem; height: 64px; top: 12px; }
+            .nav.scrolled { top: 8px; }
+            .mobile-nav { top: 84px; }
+            .nav-logo { font-size: 1.2rem; }
+        }
+
+        /* =========================================
+           HERO SECTION
+        ========================================= */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: calc(var(--nav-height) + 6rem);
+            padding-bottom: 4rem;
+            overflow: hidden;
+        }
+        
+        .hero-orb {
+            position: absolute;
+            top: 20%; right: 10%;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(74,93,78,0.12) 0%, rgba(74,93,78,0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 10s ease-in-out infinite;
+            pointer-events: none;
+        }
+        [data-theme="dark"] .hero-orb {
+            background: radial-gradient(circle, rgba(163,177,155,0.12) 0%, rgba(163,177,155,0) 70%);
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-30px, 30px) scale(1.05); }
+        }
+
+        .hero-content { max-width: 1000px; position: relative; z-index: 2; }
+        .hero-meta {
+            display: flex; gap: 2rem; margin-bottom: 3rem;
+            font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 2.8s forwards;
+        }
+        
+        .hero-title {
+            font-size: clamp(3.5rem, 10vw, 8rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: revealText 1.2s var(--ease-out) 2.6s forwards;
+        }
+        .hero-title em { font-style: italic; font-weight: 400; color: var(--accent); }
+        
+        @keyframes revealText {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-desc {
+            font-size: 1.25rem; max-width: 600px; margin-bottom: 3rem;
+            color: var(--text-muted);
+            opacity: 0; animation: revealText 1.2s var(--ease-out) 2.9s forwards;
+        }
+
+        .hero-ctas {
+            display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;
+            opacity: 0; animation: revealText 1.2s var(--ease-out) 3.2s forwards;
+        }
+        .btn-outline {
+            padding: 10px 22px; border: 1px solid var(--border); border-radius: 100px;
+            font-size: 0.88rem; font-weight: 500; transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .btn-outline:hover { border-color: var(--text); background: var(--text); color: var(--bg); }
+
+        /* =========================================
+           SCROLL REVEAL
+        ========================================= */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+            will-change: opacity, transform;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Word-by-word heading reveal */
+        .split-word { display: inline-block; overflow: hidden; vertical-align: top; }
+        .split-inner {
+            display: inline-block;
+            transform: translateY(110%);
+            transition: transform 0.9s var(--ease-out);
+        }
+        .section-title.in-view .split-inner { transform: translateY(0); }
+
+        .section-header { margin-bottom: 5rem; max-width: 800px; }
+        .section-label {
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em;
+            color: var(--accent); font-weight: 600; margin-bottom: 1.5rem; display: block;
+        }
+        .section-title { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1.5rem; }
+        .section-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; }
+
+        /* =========================================
+           ABOUT & STATS
+        ========================================= */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+        .about-img-wrapper {
+            position: relative;
+            aspect-ratio: 4/5;
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--bg-alt);
+        }
+        .about-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease-out); }
+        .about-img-wrapper:hover img { transform: scale(1.03); }
+
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 2rem; margin-top: 4rem; border-top: 1px solid var(--border); padding-top: 3rem;
+        }
+        .stat-num { font-family: var(--serif); font-size: 3rem; font-weight: 300; display: block; margin-bottom: 0.5rem; }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+        /* =========================================
+           CAPABILITIES
+        ========================================= */
+        .capabilities-list { display: flex; flex-direction: column; gap: 1.5rem; }
+        .capability-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);
+        }
+        .cap-name { font-family: var(--serif); font-size: 1.5rem; }
+        .cap-bar { flex: 1; margin: 0 2rem; height: 2px; background: var(--border); position: relative; overflow: hidden; }
+        .cap-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--accent); width: 0; transition: width 1.5s var(--ease-out); }
+        .cap-percent { font-size: 0.9rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+        /* =========================================
+           SERVICES — BENTO GRID
+        ========================================= */
+        .services-wrapper { position: relative; }
+        .services-bento {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-rows: minmax(220px, auto);
+            gap: 1.5rem;
+        }
+        .service-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.4s var(--ease-out), border-color 0.3s, box-shadow 0.4s;
+            cursor: pointer;
+        }
+        .service-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+        }
+        [data-theme="dark"] .service-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        
+        .service-card .service-num {
+            font-family: var(--serif);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+        .service-card .service-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            transition: transform 0.5s var(--ease-out);
+        }
+        .service-card:hover .service-icon { transform: scale(1.1) rotate(-5deg); }
+        .service-card .service-title {
+            font-family: var(--serif);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .service-card .service-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        .service-card .service-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        .service-card .service-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+        }
+        .service-card .learn-more {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+            transition: gap 0.3s var(--ease-out), color 0.3s;
+        }
+        .service-card:hover .learn-more {
+            gap: 0.8rem;
+            color: var(--accent);
+        }
+
+        /* Bento Layout */
+        .service-card:nth-child(1) { grid-column: span 5; grid-row: span 2; }
+        .service-card:nth-child(2) { grid-column: span 4; }
+        .service-card:nth-child(3) { grid-column: span 3; }
+        .service-card:nth-child(4) { grid-column: span 4; }
+        .service-card:nth-child(5) { grid-column: span 3; }
+        .service-card:nth-child(6) { grid-column: span 6; }
+        .service-card:nth-child(7) { grid-column: span 6; }
+        .service-card:nth-child(8) { grid-column: span 4; }
+        .service-card:nth-child(9) { grid-column: span 4; }
+        .service-card:nth-child(10) { grid-column: span 4; }
+        .service-card:nth-child(11) { grid-column: span 6; }
+        .service-card:nth-child(12) { grid-column: span 6; }
+
+        .service-card.featured {
+            background: var(--text);
+            color: var(--bg);
+            border-color: var(--text);
+        }
+        [data-theme="dark"] .service-card.featured {
+            background: var(--accent);
+            color: #121212;
+            border-color: var(--accent);
+        }
+        .service-card.featured .service-num,
+        .service-card.featured .service-desc,
+        .service-card.featured .service-tag { color: rgba(255,255,255,0.7); }
+        [data-theme="dark"] .service-card.featured .service-num,
+        [data-theme="dark"] .service-card.featured .service-desc,
+        [data-theme="dark"] .service-card.featured .service-tag { color: rgba(18,18,18,0.7); }
+        .service-card.featured .service-icon { color: var(--bg); }
+        [data-theme="dark"] .service-card.featured .service-icon { color: #121212; }
+        .service-card.featured .service-footer { border-top-color: rgba(255,255,255,0.15); }
+        [data-theme="dark"] .service-card.featured .service-footer { border-top-color: rgba(18,18,18,0.15); }
+        .service-card.featured .learn-more { color: var(--bg); }
+        [data-theme="dark"] .service-card.featured .learn-more { color: #121212; }
+
+        /* =========================================
+           WORK
+        ========================================= */
+        .work-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 4rem 2rem;
+        }
+        .project-card { position: relative; overflow: hidden; border-radius: 8px; }
+        .project-img {
+            aspect-ratio: 4/3; overflow: hidden; background: var(--bg-alt); border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .project-img img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.8s var(--ease-out), filter 0.8s ease;
+            filter: grayscale(20%);
+        }
+        .project-card:hover .project-img img {
+            transform: scale(1.05); filter: grayscale(0%);
+        }
+        .project-meta { display: flex; justify-content: space-between; align-items: flex-end; }
+        .project-cat { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.5rem; display: block; }
+        .project-title { font-family: var(--serif); font-size: 1.8rem; }
+        .project-year { font-size: 0.9rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+        /* =========================================
+           WORK — INTERACTIVE ORBIT GALLERY
+        ========================================= */
+        .orbit-intro { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .orbit-intro-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-muted); }
+        .orbit-reset {
+            border: 1px solid var(--border); border-radius: 999px; padding: 0.4rem 1rem;
+            font-size: 0.78rem; color: var(--text-muted); transition: 0.2s ease; background: var(--card);
+        }
+        .orbit-reset:hover { color: var(--text); border-color: var(--accent); }
+
+        #orbitStage {
+            position: relative; width: 100%; height: 560px; max-height: 74vh;
+            perspective: 1600px; margin-bottom: 2rem;
+        }
+        #orbitStage::after {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse 75% 70% at 50% 50%, transparent 55%, var(--bg) 100%);
+            pointer-events: none; z-index: 4;
+        }
+        #orbitRing { position: absolute; inset: 0; transform-style: preserve-3d; }
+        #orbitTrack {
+            position: absolute; top: 50%; left: 50%; border-radius: 50%;
+            border: 1px solid var(--border); pointer-events: none;
+        }
+        .orbit-card {
+            position: absolute; top: 50%; left: 50%;
+            width: 150px; height: 190px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; will-change: transform;
+            backface-visibility: hidden; transform-style: preserve-3d;
+        }
+        .orbit-card-visual {
+            width: 88px; height: 120px; border-radius: 8px; overflow: hidden;
+            background-size: cover; background-position: center;
+            box-shadow: 0 12px 28px rgba(0,0,0,.18);
+            border: 1px solid var(--border);
+            transition: box-shadow 0.25s ease, opacity 0.25s ease;
+            position: relative;
+        }
+        [data-theme="dark"] .orbit-card-visual { box-shadow: 0 12px 28px rgba(0,0,0,.5); }
+        .orbit-card-visual::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,.4) 100%);
+        }
+        .orbit-card:hover .orbit-card-visual, .orbit-card.is-active .orbit-card-visual {
+            opacity: 1 !important;
+            box-shadow: 0 18px 40px rgba(74,93,78,.28), 0 0 0 1px var(--accent);
+        }
+        .orbit-card.dim .orbit-card-visual { opacity: .14 !important; }
+        .orbit-card.dim { pointer-events: none; }
+
+        #orbitCenterPanel {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+            width: min(360px, 34vw); text-align: center; pointer-events: none;
+            z-index: 5; opacity: 0; transition: opacity 0.3s ease;
+        }
+        #orbitCenterPanel.is-visible { opacity: 1; }
+        #orbitCenterHint { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.04em; transition: opacity 0.3s ease; pointer-events: none; }
+        #orbitCenterTitle { font-family: var(--serif); font-size: clamp(1.35rem, 2.4vw, 2rem); line-height: 1.15; letter-spacing: -0.015em; color: var(--text); }
+        #orbitCenterCat { color: var(--accent); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; margin-top: 0.4rem; }
+        #orbitCenterCat::before { content: '— '; color: var(--text-muted); }
+        #orbitCenterPreview {
+            margin-top: 1.2rem; width: 100%; aspect-ratio: 16/10; border-radius: 12px;
+            background-size: cover; background-position: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,.18), 0 0 0 1px var(--border);
+            border: 1px solid var(--border);
+            transition: opacity 0.35s ease, transform 0.35s ease; transform: translateY(4px);
+        }
+        [data-theme="dark"] #orbitCenterPreview { box-shadow: 0 25px 60px rgba(0,0,0,.55), 0 0 0 1px var(--border); }
+        #orbitCenterPanel.is-visible #orbitCenterPreview { transform: translateY(0); }
+
+        .orbit-cat-label {
+            position: absolute; font-size: 0.78rem; color: var(--text-muted); white-space: nowrap;
+            cursor: pointer; padding: 3px 6px; letter-spacing: 0.02em; transition: color 0.25s ease;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .orbit-cat-label::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--text-muted); transition: background 0.25s ease, box-shadow 0.25s ease; }
+        .orbit-cat-label:hover, .orbit-cat-label.active { color: var(--text); }
+        .orbit-cat-label.active::before { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+        .orbit-cat-label .orbit-count { color: var(--accent); font-size: 0.68rem; margin-left: 2px; }
+        .orbit-cat-label .orbit-underline { position: absolute; left: 16px; right: 6px; bottom: 0; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease; }
+        .orbit-cat-label.active .orbit-underline { transform: scaleX(1); }
+
+        .orbit-footer-note { text-align: center; font-size: 0.78rem; color: var(--text-muted); margin-top: -1rem; margin-bottom: 3rem; }
+
+        @media (max-width: 900px) {
+            .orbit-cat-label { display: none; }
+            .orbit-card { width: 100px; height: 130px; }
+            .orbit-card-visual { width: 64px; height: 88px; }
+            #orbitStage { height: 440px; }
+        }
+
+        /* =========================================
+           PROCESS
+        ========================================= */
+        .process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4rem; }
+        .process-step { position: relative; }
+        .process-num {
+            font-family: var(--serif); font-size: 4rem; font-weight: 300;
+            color: var(--accent); opacity: 0.3; line-height: 1; margin-bottom: 1.5rem;
+        }
+        .process-title { font-family: var(--serif); font-size: 1.5rem; margin-bottom: 1rem; }
+        .process-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; }
+
+        /* =========================================
+           TESTIMONIALS
+        ========================================= */
+        .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .testimonial-card {
+            background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+            padding: 3rem 2rem; display: flex; flex-direction: column; gap: 2rem;
+            transition: transform 0.4s var(--ease-out), box-shadow 0.4s ease;
+        }
+        .testimonial-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .stars { color: #D97757; letter-spacing: 2px; }
+        .quote { font-family: var(--serif); font-size: 1.2rem; font-style: italic; line-height: 1.5; flex: 1; }
+        .client-info { display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+        .client-avatar {
+            width: 48px; height: 48px; border-radius: 50%; background: var(--bg-alt);
+            background-size: cover; background-position: center;
+        }
+        .client-name { font-weight: 600; font-size: 0.95rem; display: block; }
+        .client-role { font-size: 0.8rem; color: var(--text-muted); }
+
+        .marquee-wrapper {
+            padding: 4rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            overflow: hidden;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+        .marquee-track {
+            display: flex; width: max-content; gap: 6rem;
+            animation: scroll 40s linear infinite;
+        }
+        .marquee-item {
+            font-family: var(--serif); font-size: 2rem; font-style: italic;
+            color: var(--text-muted); white-space: nowrap; opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        .marquee-item:hover { opacity: 1; color: var(--text); }
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* =========================================
+           BACKGROUND & FAQ
+        ========================================= */
+        .bg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; }
+        .timeline-group { margin-bottom: 3rem; }
+        .timeline-group h3 { font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 2rem; font-family: var(--sans); font-weight: 600; }
+        .timeline-item { margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+        .timeline-date { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; font-variant-numeric: tabular-nums; }
+        .timeline-role { font-family: var(--serif); font-size: 1.3rem; margin-bottom: 0.25rem; }
+        .timeline-company { font-size: 0.95rem; color: var(--text-muted); }
+
+        .faq-list { max-width: 800px; margin: 0 auto; }
+        .faq-item { border-bottom: 1px solid var(--border); }
+        .faq-q {
+            width: 100%; text-align: left; padding: 2rem 0;
+            display: flex; justify-content: space-between; align-items: center;
+            font-family: var(--serif); font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        .faq-q:hover { color: var(--accent); }
+        .faq-icon { font-size: 1.5rem; transition: transform 0.3s var(--ease-out); }
+        .faq-item.active .faq-icon { transform: rotate(45deg); }
+        .faq-a {
+            max-height: 0; overflow: hidden; transition: max-height 0.5s var(--ease-out), padding 0.5s;
+            font-size: 1rem; color: var(--text-muted); line-height: 1.7;
+        }
+        .faq-item.active .faq-a { max-height: 200px; padding-bottom: 2rem; }
+
+        /* =========================================
+           PRICING
+        ========================================= */
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .price-card {
+            background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+            padding: 3rem 2rem; display: flex; flex-direction: column; position: relative;
+            transition: transform 0.4s var(--ease-out), border-color 0.3s;
+        }
+        .price-card:hover { transform: translateY(-8px); border-color: var(--accent); }
+        .price-card.featured { background: var(--text); color: var(--bg); border-color: var(--text); }
+        [data-theme="dark"] .price-card.featured { background: var(--accent); color: #121212; border-color: var(--accent); }
+        
+        .price-badge {
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+            background: var(--accent); color: #fff; font-size: 0.75rem; font-weight: 600;
+            padding: 0.4rem 1rem; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.1em;
+        }
+        .price-tier { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+        .price-amount { font-family: var(--serif); font-size: 3rem; font-weight: 300; margin-bottom: 1.5rem; }
+        .price-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 2rem; min-height: 50px; }
+        .price-card.featured .price-desc { color: rgba(255,255,255,0.7); }
+        
+        .price-features { list-style: none; margin-bottom: 3rem; flex: 1; }
+        .price-features li {
+            font-size: 0.9rem; margin-bottom: 0.8rem; display: flex; align-items: flex-start; gap: 0.8rem;
+        }
+        .price-features li::before { content: "✦"; color: var(--accent); font-size: 0.8rem; margin-top: 3px; }
+        .price-card.featured .price-features li::before { color: var(--bg); }
+
+        .btn-price {
+            width: 100%; padding: 1rem; border-radius: 100px; border: 1px solid var(--border);
+            font-weight: 500; transition: all 0.3s ease; text-align: center; display: block;
+        }
+        .btn-price:hover { background: var(--text); color: var(--bg); border-color: var(--text); }
+        .price-card.featured .btn-price { background: var(--bg); color: var(--text); border-color: var(--bg); }
+        .price-card.featured .btn-price:hover { background: transparent; color: var(--bg); border-color: var(--bg); }
+
+        /* =========================================
+           CONTACT & FOOTER
+        ========================================= */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; }
+        .contact-info h2 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 2rem; }
+        .contact-details { margin-top: 4rem; display: flex; flex-direction: column; gap: 1.5rem; }
+        .contact-item-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); display: block; margin-bottom: 0.5rem; }
+        .contact-item-value { font-family: var(--serif); font-size: 1.3rem; }
+
+        .form-group { margin-bottom: 2rem; position: relative; }
+        .form-group label { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.8rem; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 1rem 0; background: transparent; border: none;
+            border-bottom: 1px solid var(--border); color: var(--text); font-family: inherit; font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-bottom-color: var(--accent); }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        .btn-submit {
+            background: var(--text); color: var(--bg); padding: 1.2rem 2.5rem; border-radius: 100px;
+            font-size: 1rem; font-weight: 500; transition: transform 0.3s var(--ease-out), background 0.3s;
+            width: 100%;
+        }
+        .btn-submit:hover { transform: translateY(-2px); background: var(--accent); color: #fff; }
+
+        footer { padding: 4rem 0; border-top: 1px solid var(--border); margin-top: 4rem; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
+        .footer-logo { font-family: var(--serif); font-size: 2rem; margin-bottom: 1rem; }
+        .footer-desc { font-size: 0.9rem; color: var(--text-muted); max-width: 300px; }
+        .footer-col h4 { font-family: var(--sans); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 600; }
+        .footer-col a { display: block; margin-bottom: 0.8rem; font-size: 0.95rem; }
+        .footer-col a:hover { color: var(--accent); }
+        .footer-bottom { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); flex-wrap: wrap; gap: 1rem; }
+
+        /* =========================================
+           SERVICE DETAIL MODAL (OPTIMIZED)
+        ========================================= */
+        .service-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+        .service-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            /* Removed expensive backdrop-filter blur for performance */
+        }
+        .modal-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch; /* Smooth iOS scrolling */
+        }
+        .modal-content {
+            background: var(--bg);
+            border-radius: 20px;
+            max-width: 1100px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            overscroll-behavior: contain; /* Prevent scroll chaining */
+            -webkit-overflow-scrolling: touch; /* Smooth iOS scrolling */
+            position: relative;
+            transform: translateY(20px) scale(0.98);
+            opacity: 0;
+            transition: transform 0.35s var(--ease-out), opacity 0.35s ease;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+            contain: layout style paint; /* Isolate rendering */
+        }
+        .service-modal.active .modal-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        .modal-close {
+            position: sticky;
+            top: 1.5rem;
+            float: right;
+            margin-right: 1.5rem;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--card);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: transform 0.3s var(--ease-out), background 0.3s;
+        }
+        .modal-close:hover {
+            transform: rotate(90deg);
+            background: var(--text);
+            color: var(--bg);
+        }
+        .modal-hero {
+            padding: 5rem 4rem 3rem;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .modal-hero::before {
+            content: "";
+            position: absolute;
+            top: -50%; right: -20%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(74,93,78,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .modal-num {
+            font-family: var(--serif);
+            font-size: 1rem;
+            color: var(--accent);
+            letter-spacing: 0.2em;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+        .modal-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .modal-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            line-height: 1.6;
+            position: relative;
+        }
+        .modal-project-image {
+            width: 100%; aspect-ratio: 16/9; border-radius: 12px; overflow: hidden;
+            margin-bottom: 2.5rem; background: var(--bg-alt);
+        }
+        .modal-project-image img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-body {
+            padding: 4rem;
+        }
+        .modal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+        .modal-section { margin-bottom: 3rem; }
+        .modal-section h3 {
+            font-family: var(--sans);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        .modal-section p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+        .modal-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .modal-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .modal-list li::before {
+            content: "✦";
+            color: var(--accent);
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        .modal-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding: 2.5rem;
+            background: var(--bg-alt);
+            border-radius: 12px;
+            margin-bottom: 3rem;
+        }
+        .modal-stat-item { text-align: center; }
+        .modal-stat-value {
+            font-family: var(--serif);
+            font-size: 2.5rem;
+            font-weight: 300;
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+        .modal-stat-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+        }
+        .modal-tools {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+        .tool-tag {
+            padding: 0.5rem 1rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .modal-cta {
+            display: flex;
+            gap: 1.5rem;
+            padding: 3rem 4rem;
+            background: var(--bg-alt);
+            border-top: 1px solid var(--border);
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .modal-cta-text h4 {
+            font-family: var(--serif);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .modal-cta-text p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+        @media (max-width: 1024px) {
+            .services-bento { grid-template-columns: repeat(6, 1fr); }
+            .service-card:nth-child(n) { grid-column: span 3; grid-row: auto; }
+            .service-card:nth-child(1) { grid-column: span 6; grid-row: auto; }
+            .service-card:nth-child(6), .service-card:nth-child(7) { grid-column: span 3; }
+            .service-card:nth-child(11), .service-card:nth-child(12) { grid-column: span 3; }
+            
+            .process-grid, .testimonials-grid, .pricing-grid { grid-template-columns: 1fr 1fr; }
+            .work-grid { grid-template-columns: 1fr; gap: 4rem; }
+            .about-grid, .bg-grid, .contact-grid, .modal-grid { grid-template-columns: 1fr; gap: 4rem; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .modal-hero, .modal-body { padding: 3rem 2rem; }
+            .modal-cta { padding: 2rem; }
+        }
+
+        @media (max-width: 768px) {
+            section { padding: 5rem 0; }
+            .services-bento { grid-template-columns: 1fr; }
+            .service-card:nth-child(n) { grid-column: span 1; }
+            .process-grid, .testimonials-grid, .pricing-grid, .stats-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .hero-meta { flex-direction: column; gap: 0.5rem; }
+            .modal-stats { grid-template-columns: 1fr; }
+            .modal-hero, .modal-body { padding: 2.5rem 1.5rem; }
+            .modal-cta { padding: 1.5rem; flex-direction: column; align-items: stretch; text-align: center; }
+            .modal-content { max-height: 95vh; }
+            .modal-container { padding: 1rem; }
+        }
+
+        /* Reduce motion for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .marquee-track { animation: none; }
+        }
+    </style>
+</head>
+<body class="loading">
+
+    <!-- Intro Animation -->
+    <div class="intro" id="intro">
+        <div class="intro-content">
+            <div class="intro-name" id="introName"></div>
+            <div class="intro-line"></div>
+            <div class="intro-meta">
+                <span>Portfolio · 2026</span>
+                <span class="intro-counter" id="introCounter">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <a href="#home" class="nav-logo">Pallab Sarkar</a>
+        <div class="nav-links" id="navLinks">
+            <a href="#home" class="active" data-section="home">Home</a>
+            <a href="#about" data-section="about">About</a>
+            <a href="#services" data-section="services">Services</a>
+            <a href="#work" data-section="work">Work</a>
+            <a href="#gallery" data-section="gallery">Gallery</a>
+            <a href="#process" data-section="process">Process</a>
+            <a href="#contact" data-section="contact">Contact</a>
+        </div>
+        <div class="nav-right">
+            <div class="pill">
+                <span class="pill-dot"></span>
+                <span>Available</span>
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
+                <span class="theme-icon-wrap">
+                    <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </span>
+            </button>
+            <a href="#contact" class="btn-primary">Let's Talk</a>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Nav Drawer -->
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#home" class="active" data-section="home">Home</a>
+        <a href="#about" data-section="about">About</a>
+        <a href="#services" data-section="services">Services</a>
+        <a href="#work" data-section="work">Work</a>
+        <a href="#gallery" data-section="gallery">Gallery</a>
+        <a href="#process" data-section="process">Process</a>
+        <a href="#contact" data-section="contact">Contact</a>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+        <div class="hero-orb"></div>
+        <div class="container hero-content">
+            <div class="hero-meta">
+                <span>Available for new projects · July 2026</span>
+                <span>Lisbon, Portugal — <span id="localTime">14:32</span></span>
+            </div>
+            <h1 class="hero-title">Design that <em>whispers</em> loudly.</h1>
+            <p class="hero-desc">I'm Pallab — a full-stack developer & digital designer crafting brand identities, web applications, and digital experiences for ambitious founders and cultural institutions across 14 countries.</p>
+            <div class="hero-ctas">
+                <a href="#contact" class="btn-primary">Hire Me</a>
+                <a href="#" class="btn-outline">Download CV</a>
+                <a href="#work" class="btn-outline">View Portfolio →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-img-wrapper reveal">
+                    <img src="https://scontent.fdac207-1.fna.fbcdn.net/v/t39.30808-6/615744132_2868890156638074_2127942855355116393_n.jpg?stp=dst-jpg_tt6&cstp=mx1024x1536&ctp=s1024x1536&_nc_cat=110&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGM4fRw9D4rUp88enFs2-DYE2ETgr3UTdMTYROCvdRN045JtLVExnis0OhgtC6GpFeezlb42BvNIa029kz4AAOR&_nc_ohc=JCB644FsVF8Q7kNvwF20moj&_nc_oc=AdqjJ_ZVjQCBdbISRZ08BIAqaje-sh3z43VRg9wxxwOY2gH9y5cASk_9rgY5LmuCTzI&_nc_zt=23&_nc_ht=scontent.fdac207-1.fna&_nc_gid=qNoprtPpSwxd4Gf0sqBTqw&_nc_ss=7a2a8&oh=00_AQCqxv5l3R9f2PKmv5W5qStPn441n-Dqw6BzgDzp4WKUrA&oe=6A6EBF88" alt="Pallab Sarkar Portrait" loading="lazy">
+                </div>
+                <div class="about-text reveal">
+                    <span class="section-label">About — 01</span>
+                    <h2 class="section-title">A developer & designer with obsessive attention to the details that matter.</h2>
+                    <p class="section-desc" style="margin-bottom: 1.5rem;">For nearly a decade I've been translating ambitious ideas into visual systems and digital products that feel inevitable. My work sits at the intersection of engineering rigor and design intuition.</p>
+                    <p class="section-desc" style="margin-bottom: 1.5rem;">I believe great digital products are a form of hospitality. They should welcome, guide, and surprise — never shout. My philosophy: subtract until only the essential remains.</p>
+                    <p class="section-desc">Previously at Google (Zürich) and IDEO (Amsterdam). Now independent, working with a small roster of clients I genuinely admire.</p>
+                    
+                    <div class="stats-grid">
+                        <div class="stat"><span class="stat-num">9+</span><span class="stat-label">Years Experience</span></div>
+                        <div class="stat"><span class="stat-num">120+</span><span class="stat-label">Projects Shipped</span></div>
+                        <div class="stat"><span class="stat-num">48</span><span class="stat-label">Happy Clients</span></div>
+                        <div class="stat"><span class="stat-num">14</span><span class="stat-label">Countries</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Capabilities -->
+    <section id="capabilities" style="padding-top: 0;">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">Capabilities — 02</span>
+                <h2 class="section-title">Tools of the trade.</h2>
+                <p class="section-desc">Mastery over the instruments — so the idea can lead, not the software.</p>
+            </div>
+            <div class="capabilities-list">
+                <div class="capability-item reveal"><span class="cap-name">React / Next.js</span><div class="cap-bar"><div class="cap-fill" data-width="98%"></div></div><span class="cap-percent">98%</span></div>
+                <div class="capability-item reveal"><span class="cap-name">TypeScript</span><div class="cap-bar"><div class="cap-fill" data-width="95%"></div></div><span class="cap-percent">95%</span></div>
+                <div class="capability-item reveal"><span class="cap-name">Figma</span><div class="cap-bar"><div class="cap-fill" data-width="95%"></div></div><span class="cap-percent">95%</span></div>
+                <div class="capability-item reveal"><span class="cap-name">Node.js / Python</span><div class="cap-bar"><div class="cap-fill" data-width="90%"></div></div><span class="cap-percent">90%</span></div>
+                <div class="capability-item reveal"><span class="cap-name">UI/UX Design</span><div class="cap-bar"><div class="cap-fill" data-width="92%"></div></div><span class="cap-percent">92%</span></div>
+                <div class="capability-item reveal"><span class="cap-name">Cloud & DevOps</span><div class="cap-bar"><div class="cap-fill" data-width="85%"></div></div><span class="cap-percent">85%</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">Services — 04</span>
+                <h2 class="section-title">What I make.</h2>
+                <p class="section-desc">End-to-end design & development services. Click any card to explore in detail.</p>
+            </div>
+            <div class="services-wrapper">
+                <div class="services-bento">
+                    <div class="service-card featured reveal" data-service="brand-identity">
+                        <span class="service-num">/ 02 · Featured</span>
+                        <div class="service-icon">◈</div>
+                        <h3 class="service-title">Brand Identity Systems</h3>
+                        <p class="service-desc">Complete visual systems — typography, color, voice, guidelines, and rollout across every touchpoint.</p>
+                        <div class="service-footer">
+                            <span class="service-tag">From €8.5k</span>
+                            <span class="learn-more">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                        </div>
+                    </div>
+                    <div class="service-card reveal" data-service="logo-design">
+                        <span class="service-num">/ 01</span>
+                        <div class="service-icon">✎</div>
+                        <h3 class="service-title">Logo Design</h3>
+                        <p class="service-desc">Marks that endure. Distilled, ownable, and built to scale.</p>
+                        <div class="service-footer">
+                            <span class="service-tag">From €3.5k</span>
+                            <span class="learn-more">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                        </div>
+                    </div>
+                    <div class="service-card reveal" data-service="packaging">
+                        <span class="service-num">/ 03</span>
+                        <div class="service-icon">▣</div>
+                        <h3 class="service-title">Packaging</h3>
+                        <p class="service-desc">Shelf-stopping stories before the product opens.</p>
+                        <div class="service-footer">
+                            <span class="service-tag">Custom</span>
+                            <span class="learn-more">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                        </div>
+                    </div>
+                    <div class="service-card reveal" data-service="social-media">
+                        <span class="service-num">/ 04</span>
+                        <div class="service-icon">◉</div>
+                        <h3 class="service-title">Social Media Design</h3>
+                        <p class="service-desc">Scroll-stopping templates tuned for every platform.</p>
+                        <div class="service-footer">
+                            <span class="service-tag">Custom</span>
+                            <span class="learn-more">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                        </div>
+                    </div>
+                    <div class="service-card reveal" data-service="business-card">
+                        <span class="service-num">/ 05</span>
+                        <div class="service-icon">▭</div>
+                        <h3 class="service-title">Business Card</h3>
+                        <p class="service-desc">Tactile cards that make the first impression count.</p>
+                        <div class="service-footer">
+                            <span class="service-tag">Custom</span>
+                            <span class="learn-more">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                        </div>
+                    </div>
+                    <div class="service-card reveal" data-service="web-development">
+                        <span class="service-num">/ 06</span>
+                        <div class="service-icon">◇</div>
+                        <h3 class="service-title">Web Development</h3>
+                        <p class="service-desc">High-performance web apps and marketing sites. Modern stacks, optimized for speed, crafted to convert.</p>
+                        <div class="service-footer">
+                            <span class="service-tag">From €6k</span>
+                            <span class="learn-more">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                        </div>
+                    </div>
+                    <div class="service-card reveal" data-service="ui-ux-design">
+                        <span class="service-num">/ 07</span>
+                        <div class="service-icon">◐</div>
+                        <h3 class="service-title">UI / UX Design</h3>
+                        <p class="service-desc">Interfaces that feel inevitable. Research-driven, pixel-perfect, engineered for real users.</p>
+                        <div class="service-footer">
+                            <span class="service-tag">From €7k</span>
+                            <span class="learn-more">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                        </div>
+                    </div>
+                    <div class="service-card reveal" data-service="banner-design">
+                        <span class="service-num">/ 08</span>
+                        <div class="service-icon">▥</div>
+                        <h3 class="service-title">Banner Design</h3>
+                        <p class="service-desc">Banners engineered for conversion and clarity.</p>
+                        <div class="service-footer">
+                            <span class="service-tag">Custom</span>
+                            <span class="learn-more">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                        </div>
+                    </div>
+                    <div class="service-card reveal" data-service="brochure">
+                        <span class="service-num">/ 09</span>
+                        <div class="service-icon">▦</div>
+                        <h3 class="service-title">Brochure</h3>
+                        <p class="service-desc">Editorial brochures balancing density with delight.</p>
+                        <div class="service-footer">
+                            <span class="service-tag">Custom</span>
+                            <span class="learn-more">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                        </div>
+                    </div>
+                    <div class="service-card reveal" data-service="flyer">
+                        <span class="service-num">/ 10</span>
+                        <div class="service-icon">▧</div>
+                        <h3 class="service-title">Flyer</h3>
+                        <p class="service-desc">Bold flyers that drive action at events.</p>
+                        <div class="service-footer">
+                            <span class="service-tag">Custom</span>
+                            <span class="learn-more">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                        </div>
+                    </div>
+                    <div class="service-card reveal" data-service="presentation">
+                        <span class="service-num">/ 11</span>
+                        <div class="service-icon">▨</div>
+                        <h3 class="service-title">Presentation Design</h3>
+                        <p class="service-desc">Decks that persuade — structured, beautiful, keynote-ready.</p>
+                        <div class="service-footer">
+                            <span class="service-tag">From €2.5k</span>
+                            <span class="learn-more">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                        </div>
+                    </div>
+                    <div class="service-card reveal" data-service="book-cover">
+                        <span class="service-num">/ 12</span>
+                        <div class="service-icon">▩</div>
+                        <h3 class="service-title">Book Cover</h3>
+                        <p class="service-desc">Covers that honor the text and invite the reader.</p>
+                        <div class="service-footer">
+                            <span class="service-tag">Custom</span>
+                            <span class="learn-more">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work -->
+    <section id="work">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">Selected Work — 05</span>
+                <h2 class="section-title">Recent obsessions.</h2>
+                <p class="section-desc">A curated selection from the last eighteen months.</p>
+            </div>
+
+            <div class="work-grid">
+                <article class="project-card reveal"><div class="project-img"><img src="https://picsum.photos/seed/nord/800/600" alt="Nørd Skincare" loading="lazy"></div><div class="project-meta"><div><span class="project-cat">Brand Identity</span><h3 class="project-title">Nørd Skincare</h3></div><span class="project-year">'26</span></div></article>
+                <article class="project-card reveal"><div class="project-img"><img src="https://picsum.photos/seed/ko/800/600" alt="Kō Matcha" loading="lazy"></div><div class="project-meta"><div><span class="project-cat">Packaging</span><h3 class="project-title">Kō Matcha Co.</h3></div><span class="project-year">'26</span></div></article>
+                <article class="project-card reveal"><div class="project-img"><img src="https://picsum.photos/seed/verd/800/600" alt="Verdant Architects" loading="lazy"></div><div class="project-meta"><div><span class="project-cat">Logo Design</span><h3 class="project-title">Verdant Architects</h3></div><span class="project-year">'25</span></div></article>
+                <article class="project-card reveal"><div class="project-img"><img src="https://picsum.photos/seed/mnml/800/600" alt="Mnml Magazine" loading="lazy"></div><div class="project-meta"><div><span class="project-cat">Editorial</span><h3 class="project-title">Mnml Magazine #07</h3></div><span class="project-year">'25</span></div></article>
+                <article class="project-card reveal"><div class="project-img"><img src="https://picsum.photos/seed/orb/800/600" alt="Orbital Finance" loading="lazy"></div><div class="project-meta"><div><span class="project-cat">Digital App</span><h3 class="project-title">Orbital Finance App</h3></div><span class="project-year">'25</span></div></article>
+                <article class="project-card reveal"><div class="project-img"><img src="https://picsum.photos/seed/sole/800/600" alt="Sole & Stone" loading="lazy"></div><div class="project-meta"><div><span class="project-cat">Packaging</span><h3 class="project-title">Sole & Stone Winery</h3></div><span class="project-year">'25</span></div></article>
+                <article class="project-card reveal"><div class="project-img"><img src="https://picsum.photos/seed/luma/800/600" alt="Luma Studios" loading="lazy"></div><div class="project-meta"><div><span class="project-cat">Branding</span><h3 class="project-title">Luma Studios</h3></div><span class="project-year">'25</span></div></article>
+                <article class="project-card reveal"><div class="project-img"><img src="https://picsum.photos/seed/fete/800/600" alt="Fête Festival" loading="lazy"></div><div class="project-meta"><div><span class="project-cat">Print</span><h3 class="project-title">Fête Festival Posters</h3></div><span class="project-year">'24</span></div></article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery — interactive 3D orbit view of the same work -->
+    <section id="gallery">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">Gallery</span>
+                <h2 class="section-title">More from the studio.</h2>
+                <p class="section-desc">A rotating look at additional work — drag to explore, click any piece for details.</p>
+            </div>
+
+            <div class="orbit-intro">
+                <span class="orbit-intro-label">Explore interactively — hover or drag, click for details</span>
+                <button class="orbit-reset" id="orbitReset" type="button">Clear filter</button>
+            </div>
+            <div id="orbitStage">
+                <div id="orbitTrack"></div>
+                <div id="orbitRing"></div>
+                <div id="orbitCenterHint" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">Hover a project</div>
+                <div id="orbitCenterPanel">
+                    <div id="orbitCenterTitle">—</div>
+                    <div id="orbitCenterCat">—</div>
+                    <div id="orbitCenterPreview"></div>
+                </div>
+            </div>
+            <p class="orbit-footer-note"><span id="orbitVisibleCount">0</span> projects &nbsp;·&nbsp; drag to rotate · click to open</p>
+        </div>
+    </section>
+
+    <!-- Process -->
+    <section id="process" style="background: var(--bg-alt);">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">Process — 06</span>
+                <h2 class="section-title">How the magic happens.</h2>
+                <p class="section-desc">A proven six-step framework — transparent, collaborative, and designed to protect the idea.</p>
+            </div>
+            <div class="process-grid">
+                <div class="process-step reveal"><div class="process-num">01</div><h3 class="process-title">Discovery</h3><p class="process-desc">Deep-dive into your brand, audience, and ambitions. The foundation of everything.</p></div>
+                <div class="process-step reveal"><div class="process-num">02</div><h3 class="process-title">Research</h3><p class="process-desc">Competitive audit, cultural context, moodboards. Finding the white space.</p></div>
+                <div class="process-step reveal"><div class="process-num">03</div><h3 class="process-title">Concept</h3><p class="process-desc">Three distinct directions, each with a clear rationale. We pick one together.</p></div>
+                <div class="process-step reveal"><div class="process-num">04</div><h3 class="process-title">Design & Build</h3><p class="process-desc">The chosen direction refined across every application and touchpoint.</p></div>
+                <div class="process-step reveal"><div class="process-num">05</div><h3 class="process-title">Revision</h3><p class="process-desc">Two focused rounds of refinement. Precision over volume.</p></div>
+                <div class="process-step reveal"><div class="process-num">06</div><h3 class="process-title">Delivery</h3><p class="process-desc">Full source files, guidelines, and a walkthrough session.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">Kind Words — 07</span>
+                <h2 class="section-title">What clients say.</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card reveal">
+                    <div class="stars">★★★★★</div>
+                    <p class="quote">"Pallab didn't just design our brand — he understood it better than we did. The identity he delivered has become the spine of our entire business."</p>
+                    <div class="client-info">
+                        <div class="client-avatar" style="background-image: url('https://picsum.photos/seed/elena/100/100')"></div>
+                        <div><span class="client-name">Elena Moretti</span><span class="client-role">Founder, Nørd Skincare · Milan</span></div>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="stars">★★★★★</div>
+                    <p class="quote">"Working with Pallab felt like having a creative partner, not a vendor. He pushed us in directions we never would have gone — and every push was right."</p>
+                    <div class="client-info">
+                        <div class="client-avatar" style="background-image: url('https://picsum.photos/seed/james/100/100')"></div>
+                        <div><span class="client-name">James Kowalski</span><span class="client-role">CEO, Orbital Finance · London</span></div>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="stars">★★★★★</div>
+                    <p class="quote">"The packaging Pallab designed tripled our shelf pickup rate in the first quarter. It's rare to find work that is both beautiful and commercially sharp."</p>
+                    <div class="client-info">
+                        <div class="client-avatar" style="background-image: url('https://picsum.photos/seed/sofia/100/100')"></div>
+                        <div><span class="client-name">Sofia Tanaka</span><span class="client-role">Brand Director, Kō Matcha · Kyoto</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee -->
+    <div class="marquee-wrapper">
+        <div class="marquee-track">
+            <span class="marquee-item">Google</span><span class="marquee-item">Aesop</span><span class="marquee-item">Monocle</span><span class="marquee-item">Hermès</span>
+            <span class="marquee-item">The New York Times</span><span class="marquee-item">Vogue</span><span class="marquee-item">Kinfolk</span><span class="marquee-item">Wallpaper*</span>
+            <span class="marquee-item">Google</span><span class="marquee-item">Aesop</span><span class="marquee-item">Monocle</span><span class="marquee-item">Hermès</span>
+            <span class="marquee-item">The New York Times</span><span class="marquee-item">Vogue</span><span class="marquee-item">Kinfolk</span><span class="marquee-item">Wallpaper*</span>
+        </div>
+    </div>
+
+    <!-- Background -->
+    <section id="background">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">Background — 08</span>
+                <h2 class="section-title">The journey.</h2>
+            </div>
+            <div class="bg-grid">
+                <div class="timeline-group reveal">
+                    <h3>Experience</h3>
+                    <div class="timeline-item"><div class="timeline-date">2022 — PRESENT</div><div class="timeline-role">Independent Developer & Designer</div><div class="timeline-company">Studio Pallab · Lisbon</div></div>
+                    <div class="timeline-item"><div class="timeline-date">2019 — 2022</div><div class="timeline-role">Senior Product Designer</div><div class="timeline-company">Google · Zürich</div></div>
+                    <div class="timeline-item"><div class="timeline-date">2017 — 2019</div><div class="timeline-role">Designer & Developer</div><div class="timeline-company">IDEO · Amsterdam</div></div>
+                </div>
+                <div class="timeline-group reveal">
+                    <h3>Education</h3>
+                    <div class="timeline-item"><div class="timeline-date">2015 — 2017</div><div class="timeline-role">MA Interaction Design</div><div class="timeline-company">Royal College of Art · London</div></div>
+                    <div class="timeline-item"><div class="timeline-date">2011 — 2015</div><div class="timeline-role">B.Tech Computer Science</div><div class="timeline-company">IIT · Kharagpur</div></div>
+                    <div class="timeline-item"><div class="timeline-date">2014</div><div class="timeline-role">Exchange Semester</div><div class="timeline-company">MIT Media Lab · Boston</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" style="background: var(--bg-alt);">
+        <div class="container">
+            <div class="section-header reveal" style="text-align: center; margin: 0 auto 5rem;">
+                <span class="section-label">FAQ — 09</span>
+                <h2 class="section-title">Common questions.</h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item reveal"><button class="faq-q">How long does a typical project take? <span class="faq-icon">+</span></button><div class="faq-a"><p>Logo projects typically 4–6 weeks. Full brand systems 8–10 weeks. Web applications 6–12 weeks depending on scope.</p></div></div>
+                <div class="faq-item reveal"><button class="faq-q">How many revisions are included? <span class="faq-icon">+</span></button><div class="faq-a"><p>Every project includes two focused rounds of revisions. Additional rounds can be arranged at a pre-agreed rate.</p></div></div>
+                <div class="faq-item reveal"><button class="faq-q">Do you provide source files and code? <span class="faq-icon">+</span></button><div class="faq-a"><p>Absolutely. Final delivery includes all source files, exported assets, source code, and comprehensive documentation.</p></div></div>
+                <div class="faq-item reveal"><button class="faq-q">Do you work with international clients? <span class="faq-icon">+</span></button><div class="faq-a"><p>Most of my clients are international. I work across time zones via Figma, Loom, and scheduled video calls.</p></div></div>
+                <div class="faq-item reveal"><button class="faq-q">What are your rates? <span class="faq-icon">+</span></button><div class="faq-a"><p>Logo projects start at €3,500, full brand identities from €8,500, web apps from €6,000.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment -->
+    <section id="investment">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">Investment — 10</span>
+                <h2 class="section-title">Transparent pricing.</h2>
+                <p class="section-desc">Three packages designed around the most common needs. Every engagement begins with a free 30-minute discovery call.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="price-card reveal"><div class="price-tier">Basic</div><div class="price-amount">€3.5k</div><p class="price-desc">Logo design for founders ready to look as good as they work.</p><ul class="price-features"><li>Primary logo + 2 variations</li><li>Color palette & typography</li><li>Basic brand sheet (PDF)</li><li>All source files</li><li>2 revision rounds</li></ul><a href="#contact" class="btn-price">Start Project</a></div>
+                <div class="price-card featured reveal"><div class="price-badge">Most Popular</div><div class="price-tier">Standard</div><div class="price-amount">€8.5k</div><p class="price-desc">Complete brand identity for businesses ready to scale with confidence.</p><ul class="price-features"><li>Everything in Basic</li><li>Full visual identity system</li><li>Brand guidelines (40+ pages)</li><li>Business card + letterhead</li><li>Social media templates</li><li>3 revision rounds</li></ul><a href="#contact" class="btn-price">Start Project</a></div>
+                <div class="price-card reveal"><div class="price-tier">Premium</div><div class="price-amount">€18k+</div><p class="price-desc">End-to-end brand & web experience for ambitious launches.</p><ul class="price-features"><li>Everything in Standard</li><li>Web app or marketing site</li><li>Website art direction</li><li>Motion & animation assets</li><li>Launch campaign design</li><li>Unlimited revisions (60 days)</li></ul><a href="#contact" class="btn-price">Start Project</a></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" style="background: var(--bg-alt);">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info reveal">
+                    <span class="section-label">Let's Talk — 11</span>
+                    <h2>Have an idea?<br><em>Let's make it real.</em></h2>
+                    <p class="section-desc">I take on a limited number of projects each quarter to ensure every client gets my full attention.</p>
+                    <div class="contact-details">
+                        <div><span class="contact-item-label">Email</span><a href="mailto:hello@pallabsarkar.studio" class="contact-item-value">hello@pallabsarkar.studio ↗</a></div>
+                        <div><span class="contact-item-label">Phone / WhatsApp</span><span class="contact-item-value">+351 912 345 678</span></div>
+                        <div><span class="contact-item-label">Studio</span><span class="contact-item-value">Rua da Boavista 42, Lisbon</span></div>
+                    </div>
+                </div>
+                <div class="contact-form reveal">
+                    <form>
+                        <div class="form-group"><label for="name">Your Name</label><input type="text" id="name" required></div>
+                        <div class="form-group"><label for="email">Email</label><input type="email" id="email" required></div>
+                        <div class="form-group"><label for="type">Project Type</label><select id="type"><option>Select a service</option><option>Logo Design</option><option>Brand Identity</option><option>Web Development</option><option>UI/UX Design</option><option>Packaging</option><option>Other</option></select></div>
+                        <div class="form-group"><label for="budget">Budget Range</label><select id="budget"><option>Under €5k</option><option>€5k — €10k</option><option>€10k — €20k</option><option>€20k+</option></select></div>
+                        <div class="form-group"><label for="message">Tell me about your project</label><textarea id="message" rows="4" required></textarea></div>
+                        <button type="submit" class="btn-submit">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div><div class="footer-logo">Pallab Sarkar</div><p class="footer-desc">Full-stack developer & digital designer. Crafting brand identities and digital products that endure.</p></div>
+                <div class="footer-col"><h4>Navigate</h4><a href="#home">Home</a><a href="#about">About</a><a href="#work">Work</a><a href="#services">Services</a><a href="#process">Process</a></div>
+                <div class="footer-col"><h4>Services</h4><a href="#services">Logo Design</a><a href="#services">Brand Identity</a><a href="#services">Web Development</a><a href="#services">UI/UX Design</a><a href="#services">Packaging</a></div>
+                <div class="footer-col"><h4>Connect</h4><a href="#">GitHub</a><a href="#">Behance</a><a href="#">Dribbble</a><a href="#">Instagram</a><a href="#">LinkedIn</a></div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Pallab Sarkar — All rights reserved.</span>
+                <span>Made with intention in Lisbon · Designed & built by Pallab Sarkar</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Service Detail Modal -->
+    <div class="service-modal" id="serviceModal">
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+        <div class="modal-container">
+            <div class="modal-content">
+                <button class="modal-close" id="modalClose" aria-label="Close">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+                <div id="modalContentInner"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Detail Modal (Gallery) -->
+    <div class="service-modal" id="projectModal">
+        <div class="modal-backdrop" id="projectModalBackdrop"></div>
+        <div class="modal-container">
+            <div class="modal-content">
+                <button class="modal-close" id="projectModalClose" aria-label="Close">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+                <div id="projectModalContentInner"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =========================================
+        // SERVICE DATA
+        // =========================================
+        const serviceData = {
+            'logo-design': { num: '01', title: 'Logo Design', subtitle: 'Marks that endure. Distilled, ownable, and built to scale.', overview: 'A logo is the anchor of your brand. My approach combines strategic thinking with typographic precision to create marks that feel inevitable.', includes: ['Primary logo mark', '2-3 alternative variations', 'Monochrome & reversed versions', 'Favicon & social avatars', 'All vector source files'], process: ['Discovery call', 'Competitive audit', 'Moodboard exploration', '3 concept presentations', 'Refinement', 'Final file preparation'], timeline: '4–6 weeks', revisions: '2 rounds', price: 'From €3,500', tools: ['Adobe Illustrator', 'Figma', 'Glyphs'], faq: [{q:'How many initial concepts?', a:'3 distinct, fully-realized concepts.'}, {q:'Do I own the final logo?', a:'Yes, completely. All IP rights transfer to you.'}] },
+            'brand-identity': { num: '02', title: 'Brand Identity Systems', subtitle: 'Complete visual systems — typography, color, voice, guidelines.', overview: 'A brand identity is more than a logo. It\'s a living system of visual decisions that makes your brand recognizable and memorable.', includes: ['Everything in Logo Design', 'Complete color system', 'Typography system', 'Iconography & illustration style', '40+ page brand guidelines', 'Business card & letterhead'], process: ['Stakeholder interviews', 'Deep competitive audit', 'Strategic positioning', '3 identity directions', 'Full system development', 'Guidelines documentation'], timeline: '8–10 weeks', revisions: '3 rounds', price: 'From €8,500', tools: ['Figma', 'Adobe Illustrator', 'InDesign'], faq: [{q:'What\'s in the guidelines?', a:'A 40+ page PDF covering logo, color, typography, imagery, voice.'}] },
+            'packaging': { num: '03', title: 'Packaging Design', subtitle: 'Shelf-stopping packaging that tells a story before the product opens.', overview: 'Great packaging does three things simultaneously: attracts attention, communicates value, and creates an emotional connection.', includes: ['Primary packaging design', 'Secondary packaging', 'Label design', '3D renderings', 'Print-ready files'], process: ['Product research', 'Shelf audit', 'Concept exploration', 'Structural design', 'Print coordination'], timeline: '6–10 weeks', revisions: '3 rounds', price: 'From €5,000', tools: ['Illustrator', 'Esko', 'Photoshop', 'Cinema 4D'], faq: [{q:'Do you handle print production?', a:'I coordinate with trusted print partners.'}] },
+            'social-media': { num: '04', title: 'Social Media Design', subtitle: 'Scroll-stopping templates tuned for every platform.', overview: 'Social media demands speed without sacrificing quality. I design modular template systems for daily on-brand content.', includes: ['Platform-specific templates', 'Story & Reels templates', 'Carousel templates', 'Campaign assets', 'Brand filter pack'], process: ['Audit of current presence', 'Platform strategy', 'Template system design', 'Campaign creation', 'Team training'], timeline: '4–6 weeks', revisions: '2 rounds', price: 'From €3,000', tools: ['Figma', 'Canva Pro', 'After Effects'], faq: [{q:'Can my team use these?', a:'Yes, all templates are built for non-designers.'}] },
+            'business-card': { num: '05', title: 'Business Card Design', subtitle: 'Tactile, memorable cards that make the first impression count.', overview: 'A business card is often the first physical touchpoint with your brand. I design cards that balance clarity with memorable details.', includes: ['Double-sided design', '2-3 variations', 'Special finish recommendations', 'Print-ready files', 'Digital card (QR/NFC)'], process: ['Information architecture', 'Layout exploration', 'Typography refinement', 'Material selection', 'Print coordination'], timeline: '2–3 weeks', revisions: '2 rounds', price: 'From €800', tools: ['InDesign', 'Illustrator'], faq: [{q:'Do you recommend print vendors?', a:'Yes, I work with premium printers across Europe.'}] },
+            'web-development': { num: '06', title: 'Web Development', subtitle: 'High-performance web apps — optimized for speed, crafted to convert.', overview: 'I build websites that are fast, accessible, and a joy to use. Every line of code is written with performance and UX in mind.', includes: ['Full-stack web application', 'Custom CMS integration', 'SEO optimization', 'Accessibility compliance', 'Analytics integration', 'Hosting setup'], process: ['Requirements gathering', 'IA & wireframes', 'Design system setup', 'Component development', 'Testing', 'Deployment'], timeline: '6–12 weeks', revisions: 'Weekly demos', price: 'From €6,000', tools: ['React', 'Next.js', 'TypeScript', 'Node.js', 'Tailwind'], faq: [{q:'What tech stack?', a:'Primarily Next.js with TypeScript, Node.js backend, PostgreSQL.'}] },
+            'ui-ux-design': { num: '07', title: 'UI / UX Design', subtitle: 'Interfaces that feel inevitable — research-driven, pixel-perfect.', overview: 'I design digital products that users love and businesses rely on. Research meets sharp visual design.', includes: ['User research', 'Information architecture', 'Wireframes & flows', 'High-fidelity UI', 'Interactive prototypes', 'Design system'], process: ['User interviews', 'Competitive analysis', 'Journey mapping', 'Wireframes', 'Visual direction', 'Prototype & testing', 'Dev handoff'], timeline: '6–10 weeks', revisions: 'Iterative with testing', price: 'From €7,000', tools: ['Figma', 'Maze', 'Hotjar', 'Miro'], faq: [{q:'Do you conduct user research?', a:'Yes, research is built into every project.'}] },
+            'banner-design': { num: '08', title: 'Banner Design', subtitle: 'Banners engineered for conversion and clarity.', overview: 'Banners live in competitive environments. My approach combines strategic messaging with bold typography.', includes: ['All IAB sizes', 'Retina exports', 'Static & animated versions', 'A/B variations', 'Messaging framework'], process: ['Campaign objectives', 'Audience research', 'Concept exploration', 'Size adaptation', 'Animation'], timeline: '2–4 weeks', revisions: '2 rounds', price: 'From €1,500', tools: ['Figma', 'After Effects'], faq: [{q:'Do you create animated banners?', a:'Yes, HTML5 animated banners are standard.'}] },
+            'brochure': { num: '09', title: 'Brochure & Editorial', subtitle: 'Editorial brochures balancing density with delight.', overview: 'Editorial design is about orchestrating attention. I design brochures that guide readers through complex information.', includes: ['Custom grid system', 'Typography system', 'Layout templates', 'Image curation', 'Print-ready PDF', 'Digital version'], process: ['Content audit', 'Grid & typography', 'Layout exploration', 'Art direction', 'Iteration', 'Prepress'], timeline: '4–8 weeks', revisions: '3 rounds', price: 'From €4,000', tools: ['InDesign', 'Illustrator'], faq: [{q:'Do you write content?', a:'I work closely with copywriters and can edit/refine content.'}] },
+            'flyer': { num: '10', title: 'Flyer Design', subtitle: 'Bold, clear flyers that drive action at events.', overview: 'Flyers have seconds to make an impact. Clear hierarchy, bold typography, and purposeful whitespace.', includes: ['Single or double-sided', 'Multiple size variants', 'Print-ready files', 'Digital version', 'Print recommendations'], process: ['Objective definition', 'Hierarchy exploration', 'Typography & imagery', 'Size adaptation', 'Print prep'], timeline: '1–2 weeks', revisions: '2 rounds', price: 'From €600', tools: ['InDesign', 'Illustrator'], faq: [{q:'How fast can you deliver?', a:'Standard is 1-2 weeks. Rush options available.'}] },
+            'presentation': { num: '11', title: 'Presentation Design', subtitle: 'Decks that persuade — structured, beautiful, keynote-ready.', overview: 'Great presentations combine narrative, design, and performance. I design decks that help you tell your story with impact.', includes: ['Custom slide master (50+ layouts)', 'Data viz templates', 'Custom iconography', 'Animation system', 'Google Slides & Keynote'], process: ['Content audit', 'Audience analysis', 'Visual direction', 'Slide master', 'Custom slides', 'Animation', 'Rehearsal support'], timeline: '3–5 weeks', revisions: '3 rounds', price: 'From €2,500', tools: ['Figma', 'Keynote', 'PowerPoint'], faq: [{q:'Do you work with existing content?', a:'Yes, I design around existing content or work with copywriters.'}] },
+            'book-cover': { num: '12', title: 'Book Cover Design', subtitle: 'Covers that honor the text and invite the reader.', overview: 'A book cover is a promise. I design covers that capture the essence of the work while meeting readers where they are.', includes: ['Front, back, spine design', 'E-book version', 'Audiobook cover', 'Marketing materials', 'Print-ready files'], process: ['Manuscript reading', 'Genre research', 'Concept exploration', 'Typography', 'Full wrap', 'Marketing adaptation'], timeline: '4–6 weeks', revisions: '3 rounds', price: 'From €2,500', tools: ['InDesign', 'Photoshop'], faq: [{q:'Do you need to read the whole book?', a:'Ideally yes, but I can work with synopsis and samples.'}] }
+        };
+
+        // =========================================
+        // 1. INTRO ANIMATION
+        // =========================================
+        (function initIntro() {
+            const introName = document.getElementById('introName');
+            const nameText = 'PALLAB SARKAR';
+            nameText.split('').forEach((letter, i) => {
+                if (letter === ' ') {
+                    const spacer = document.createElement('span');
+                    spacer.className = 'intro-space';
+                    introName.appendChild(spacer);
+                } else {
+                    const span = document.createElement('span');
+                    span.className = 'intro-letter';
+                    span.textContent = letter;
+                    span.style.animationDelay = `${0.3 + i * 0.05}s`;
+                    introName.appendChild(span);
+                }
+            });
+
+            const counter = document.getElementById('introCounter');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 8 + 2;
+                if (progress >= 100) {
+                    progress = 100;
+                    counter.textContent = '100%';
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('intro').classList.add('hidden');
+                        document.body.classList.remove('loading');
+                    }, 400);
+                } else {
+                    counter.textContent = Math.floor(progress) + '%';
+                }
+            }, 120);
+        })();
+
+        // =========================================
+        // 2. SCROLL REVEAL
+        // =========================================
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    const bar = entry.target.querySelector('.cap-fill');
+                    if (bar) bar.style.width = bar.getAttribute('data-width');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // =========================================
+        // 3. ACTIVE NAVIGATION (FIXED - Proper IntersectionObserver)
+        // =========================================
+        const sections = document.querySelectorAll('section[id]');
+        const navLinksDesktop = document.querySelectorAll('#navLinks a[data-section]');
+        const navLinksMobile = document.querySelectorAll('#mobileNav a[data-section]');
+        const allNavLinks = [...navLinksDesktop, ...navLinksMobile];
+
+        // Track which sections are currently visible
+        const sectionVisibility = new Map();
+        
+        // Ordered list of nav sections for priority-based active detection
+        const sectionOrder = ['home', 'about', 'capabilities', 'services', 'work', 'gallery', 'process', 'testimonials', 'background', 'faq', 'investment', 'contact'];
+
+        const activeNavObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // Store visibility state for each section
+                sectionVisibility.set(entry.target.id, entry.isIntersecting);
+            });
+
+            // Find the topmost visible section in DOM order
+            let activeSectionId = null;
+            for (const id of sectionOrder) {
+                if (sectionVisibility.get(id)) {
+                    activeSectionId = id;
+                    break;
+                }
+            }
+
+            // Map capabilities to services (since capabilities doesn't have its own nav link)
+            // Map testimonials, background, faq, investment to nearest nav sections
+            let navActiveId = activeSectionId;
+            if (activeSectionId === 'capabilities') navActiveId = 'about';
+            else if (activeSectionId === 'testimonials') navActiveId = 'work';
+            else if (activeSectionId === 'background') navActiveId = 'process';
+            else if (activeSectionId === 'faq' || activeSectionId === 'investment') navActiveId = 'contact';
+
+            if (navActiveId) {
+                allNavLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('data-section') === navActiveId);
+                });
+            }
+        }, {
+            // Trigger when section is in the top 40% of the viewport
+            rootMargin: '-10% 0px -60% 0px',
+            threshold: [0, 0.1, 0.25, 0.5]
+        });
+
+        sections.forEach(section => activeNavObserver.observe(section));
+
+        // Close mobile nav on link click
+        navLinksMobile.forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobileNav').classList.remove('active');
+                document.getElementById('menuToggle').classList.remove('active');
+            });
+        });
+
+        // =========================================
+        // 4. NAV SCROLL EFFECT
+        // =========================================
+        const nav = document.getElementById('nav');
+        let lastScroll = 0;
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            lastScroll = window.scrollY;
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    nav.classList.toggle('scrolled', lastScroll > 50);
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+
+        // =========================================
+        // 5. MOBILE MENU
+        // =========================================
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileNav = document.getElementById('mobileNav');
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            mobileNav.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!mobileNav.contains(e.target) && !menuToggle.contains(e.target) && mobileNav.classList.contains('active')) {
+                mobileNav.classList.remove('active');
+                menuToggle.classList.remove('active');
+            }
+        });
+
+        // =========================================
+        // 6. DARK MODE
+        // =========================================
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.setAttribute('data-theme', 'dark');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        });
+
+        // =========================================
+        // 7. FAQ ACCORDION
+        // =========================================
+        document.querySelectorAll('.faq-q').forEach(button => {
+            button.addEventListener('click', () => {
+                const item = button.parentElement;
+                const isActive = item.classList.contains('active');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                if (!isActive) item.classList.add('active');
+            });
+        });
+
+        // =========================================
+        // 8. LOCAL TIME
+        // =========================================
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-GB', { timeZone: 'Europe/Lisbon', hour: '2-digit', minute: '2-digit' });
+            const el = document.getElementById('localTime');
+            if (el) el.textContent = timeString;
+        }
+        updateTime();
+        setInterval(updateTime, 60000);
+
+        // =========================================
+        // 9. SERVICE DETAIL MODAL (OPTIMIZED FOR PERFORMANCE)
+        // =========================================
+        const modal = document.getElementById('serviceModal');
+        const modalContentInner = document.getElementById('modalContentInner');
+        const modalClose = document.getElementById('modalClose');
+        const modalBackdrop = document.getElementById('modalBackdrop');
+        const modalContentEl = document.querySelector('.modal-content');
+
+        function openServiceModal(serviceKey) {
+            const data = serviceData[serviceKey];
+            if (!data) return;
+
+            const includesHTML = data.includes.map(i => `<li>${i}</li>`).join('');
+            const processHTML = data.process.map((p, i) => `<li><strong>${String(i+1).padStart(2, '0')}.</strong> ${p}</li>`).join('');
+            const faqHTML = data.faq.map(f => `
+                <div class="faq-item">
+                    <button class="faq-q">${f.q} <span class="faq-icon">+</span></button>
+                    <div class="faq-a"><p>${f.a}</p></div>
+                </div>
+            `).join('');
+            const toolsHTML = data.tools.map(t => `<span class="tool-tag">${t}</span>`).join('');
+
+            modalContentInner.innerHTML = `
+                <div class="modal-hero">
+                    <span class="modal-num">/ ${data.num}</span>
+                    <h2 class="modal-title">${data.title}</h2>
+                    <p class="modal-subtitle">${data.subtitle}</p>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-stats">
+                        <div class="modal-stat-item"><span class="modal-stat-value">${data.timeline}</span><span class="modal-stat-label">Timeline</span></div>
+                        <div class="modal-stat-item"><span class="modal-stat-value">${data.revisions}</span><span class="modal-stat-label">Revisions</span></div>
+                        <div class="modal-stat-item"><span class="modal-stat-value">${data.price.replace('From ', '')}</span><span class="modal-stat-label">${data.price.includes('From') ? 'Starting from' : 'Investment'}</span></div>
+                    </div>
+                    <div class="modal-grid">
+                        <div class="modal-section"><h3>Overview</h3><p>${data.overview}</p></div>
+                        <div class="modal-section"><h3>Process</h3><ul class="modal-list">${processHTML}</ul></div>
+                    </div>
+                    <div class="modal-grid">
+                        <div class="modal-section"><h3>What's Included</h3><ul class="modal-list">${includesHTML}</ul></div>
+                        <div class="modal-section"><h3>Tools & Technologies</h3><div class="modal-tools">${toolsHTML}</div></div>
+                    </div>
+                    <div class="modal-section"><h3>Common Questions</h3><div class="faq-list" id="modalFaqList">${faqHTML}</div></div>
+                </div>
+                <div class="modal-cta">
+                    <div class="modal-cta-text"><h4>Ready to start your ${data.title.toLowerCase()} project?</h4><p>Book a free 30-minute discovery call with Pallab.</p></div>
+                    <a href="#contact" class="btn-primary" id="modalCTA">Start Project →</a>
+                </div>
+            `;
+
+            // Reset scroll position before opening
+            if (modalContentEl) modalContentEl.scrollTop = 0;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Bind FAQ handlers inside modal (delegated for performance)
+            modalContentInner.addEventListener('click', (e) => {
+                const btn = e.target.closest('.faq-q');
+                if (btn) {
+                    const item = btn.parentElement;
+                    const isActive = item.classList.contains('active');
+                    modalContentInner.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                    if (!isActive) item.classList.add('active');
+                }
+            });
+
+            const ctaBtn = document.getElementById('modalCTA');
+            if (ctaBtn) ctaBtn.addEventListener('click', closeServiceModal);
+        }
+
+        function closeServiceModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            // Delay innerHTML cleanup until after animation completes
+            setTimeout(() => { 
+                modalContentInner.innerHTML = ''; 
+            }, 350);
+        }
+
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('a')) return;
+                const key = card.getAttribute('data-service');
+                openServiceModal(key);
+            });
+        });
+
+        modalClose.addEventListener('click', closeServiceModal);
+        modalBackdrop.addEventListener('click', closeServiceModal);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) closeServiceModal();
+        });
+
+        // =========================================
+        // 10. FORM SUBMIT
+        // =========================================
+        document.querySelector('form')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thanks for reaching out! Pallab will be in touch within 24 hours.');
+            e.target.reset();
+        });
+
+        // =========================================
+        // 11. GALLERY — 3D ORBIT VIEW (vanilla, no deps)
+        // Independent project list — edit the orbitProjects array below
+        // to change what shows here, separate from the Work grid.
+        // =========================================
+        (function initOrbitGallery() {
+            const stage = document.getElementById('orbitStage');
+            if (!stage) return;
+
+            // Edit this list to control what shows in the Gallery —
+            // it's independent from the "Selected Work" grid above.
+            const orbitProjects = [
+                { title: 'Nørd Skincare', cat: 'Brand Identity', img: 'https://picsum.photos/seed/nord/800/600' },
+                { title: 'Kō Matcha Co.', cat: 'Packaging', img: 'https://picsum.photos/seed/ko/800/600' },
+                { title: 'Verdant Architects', cat: 'Logo Design', img: 'https://picsum.photos/seed/verd/800/600' },
+                { title: 'Mnml Magazine #07', cat: 'Editorial', img: 'https://picsum.photos/seed/mnml/800/600' },
+                { title: 'Orbital Finance App', cat: 'Digital App', img: 'https://picsum.photos/seed/orb/800/600' },
+                { title: 'Sole & Stone Winery', cat: 'Packaging', img: 'https://picsum.photos/seed/sole/800/600' },
+                { title: 'Luma Studios', cat: 'Branding', img: 'https://picsum.photos/seed/luma/800/600' },
+                { title: 'Fête Festival Posters', cat: 'Print', img: 'https://picsum.photos/seed/fete/800/600' }
+            ];
+
+            const ring = document.getElementById('orbitRing');
+            const centerTitle = document.getElementById('orbitCenterTitle');
+            const centerCat = document.getElementById('orbitCenterCat');
+            const centerPreview = document.getElementById('orbitCenterPreview');
+            const centerPanel = document.getElementById('orbitCenterPanel');
+            const centerHint = document.getElementById('orbitCenterHint');
+            const visibleCount = document.getElementById('orbitVisibleCount');
+            const track = document.getElementById('orbitTrack');
+            const resetBtn = document.getElementById('orbitReset');
+
+            const catOrder = [...new Set(orbitProjects.map(p => p.cat))];
+            const catCounts = catOrder.reduce((acc, c) => {
+                acc[c] = orbitProjects.filter(p => p.cat === c).length; return acc;
+            }, {});
+
+            let activeCat = null;
+            let cards = [];
+            let labels = [];
+            let rotation = 0;
+            const AUTO_SPEED = 0.09;
+            let paused = false;
+            let inView = true;
+
+            let dragging = false, dragStartX = 0, dragStartRotation = 0;
+
+            function buildCards() {
+                const list = activeCat ? orbitProjects.filter(p => p.cat === activeCat) : orbitProjects;
+                visibleCount.textContent = list.length;
+                ring.innerHTML = '';
+                cards = [];
+                const n = list.length;
+                list.forEach((p, i) => {
+                    const baseAngle = (i / n) * Math.PI * 2 - Math.PI / 2;
+                    const el = document.createElement('div');
+                    el.className = 'orbit-card';
+                    const visual = document.createElement('div');
+                    visual.className = 'orbit-card-visual';
+                    visual.style.backgroundImage = `url('${p.img}')`;
+                    el.appendChild(visual);
+                    el.addEventListener('mouseenter', () => { showPreview(p); paused = true; });
+                    el.addEventListener('mouseleave', () => { hidePreview(); paused = false; });
+                    el.addEventListener('click', () => openProjectModal(p));
+                    ring.appendChild(el);
+                    cards.push({ el, baseAngle, p });
+                });
+                hidePreview();
+            }
+
+            function buildLabels() {
+                document.querySelectorAll('.orbit-cat-label').forEach(n => n.remove());
+                labels = [];
+                const n = catOrder.length;
+                catOrder.forEach((cat, i) => {
+                    const baseAngle = (i / n) * Math.PI * 2 - Math.PI / 2;
+                    const el = document.createElement('div');
+                    el.className = 'orbit-cat-label' + (activeCat === cat ? ' active' : '');
+                    el.innerHTML = `${cat} <span class="orbit-count">(${catCounts[cat]})</span><span class="orbit-underline"></span>`;
+                    el.addEventListener('click', () => {
+                        activeCat = activeCat === cat ? null : cat;
+                        buildLabels();
+                        buildCards();
+                    });
+                    stage.appendChild(el);
+                    labels.push({ el, baseAngle, cat });
+                });
+            }
+
+            function showPreview(p) {
+                centerTitle.textContent = p.title;
+                centerCat.textContent = p.cat;
+                centerPreview.style.backgroundImage = `url('${p.img}')`;
+                centerPanel.classList.add('is-visible');
+                centerHint.style.opacity = 0;
+            }
+            function hidePreview() {
+                centerPanel.classList.remove('is-visible');
+                centerHint.style.opacity = 1;
+            }
+
+            // Extra case-study copy, keyed by project title.
+            // Add an entry here whenever a real project replaces a placeholder above.
+            const projectExtra = {
+                'Nørd Skincare': { y: '2026', d: 'A full identity system for a Scandinavian skincare house built on restraint — custom typography, a muted Nordic palette, and a voice that speaks softly and sells loudly. Rolled out across 14 SKUs, e-commerce, and retail.', f: [['Role', 'Design & Art Direction'], ['Deliverables', 'Identity · Packaging · Guidelines · Web'], ['Impact', '14 SKUs across 6 markets']] },
+                'Kō Matcha Co.': { y: '2026', d: 'Ceremonial-grade matcha deserved packaging that behaves like a tea ceremony — quiet, precise, deliberate. A shelf system that tripled pickup rate in its first quarter.', f: [['Role', 'Packaging Design'], ['Deliverables', 'Label system · Box · Retail display'], ['Impact', '3× shelf pickup in Q1']] },
+                'Verdant Architects': { y: '2025', d: 'A single mark for a practice that builds with light. Distilled from forty explorations down to one inevitable gesture — a V that holds both a roofline and a leaf.', f: [['Role', 'Brand Mark'], ['Deliverables', 'Primary mark · Monogram · Brand sheet'], ['Impact', 'Trademarked in 3 classes']] },
+                'Mnml Magazine #07': { y: '2025', d: "Editorial design for issue #07 — 128 pages on the architecture of silence. A strict grid, one typeface family, and white space doing most of the talking.", f: [['Role', 'Editorial Design'], ['Deliverables', '128-page issue · Masthead system'], ['Impact', 'First print run sold out']] },
+                'Orbital Finance App': { y: '2025', d: 'A fintech app that makes complex treasury data feel calm. Research-driven UI, a token-based design system, and motion that explains rather than decorates.', f: [['Role', 'Product Design & Front-end'], ['Deliverables', 'Design system · iOS/Android UI'], ['Impact', '4.8★ App Store rating']] },
+                'Sole & Stone Winery': { y: '2025', d: 'A label system for a family winery in the Douro valley — letterpress texture, stone-paper stock, and typography that ages as well as the wine.', f: [['Role', 'Label Design'], ['Deliverables', '6-label system · Foil specs · Gift box'], ['Impact', 'Stocked by 120+ restaurants']] },
+                'Luma Studios': { y: '2025', d: 'Identity for a film studio that treats light as a material. The mark refracts across titles, posters, and a motion system that never repeats itself.', f: [['Role', 'Identity & Motion'], ['Deliverables', 'Identity · Title sequences · Toolkit'], ['Impact', '3 festival premieres']] },
+                'Fête Festival Posters': { y: '2024', d: 'Twelve silkscreen posters for a Lisbon music festival — loud color, loose type, and a system loose enough that no two posters match.', f: [['Role', 'Poster Series'], ['Deliverables', '12 silkscreen posters · Street kit'], ['Impact', 'Print run of 500 sold out']] }
+            };
+
+            const projectModal = document.getElementById('projectModal');
+            const projectModalInner = document.getElementById('projectModalContentInner');
+            const projectModalClose = document.getElementById('projectModalClose');
+            const projectModalBackdrop = document.getElementById('projectModalBackdrop');
+            const projectModalContentEl = projectModal?.querySelector('.modal-content');
+
+            function openProjectModal(p) {
+                const extra = projectExtra[p.title] || {
+                    y: '', d: 'Case study details coming soon.',
+                    f: [['Category', p.cat], ['Status', 'In progress'], ['Year', '—']]
+                };
+                const statsHTML = extra.f.map(([k, v]) => `<div class="modal-stat-item"><span class="modal-stat-value">${v}</span><span class="modal-stat-label">${k}</span></div>`).join('');
+
+                projectModalInner.innerHTML = `
+                    <div class="modal-hero">
+                        <span class="modal-num">/ ${extra.y || '—'}</span>
+                        <h2 class="modal-title">${p.title}</h2>
+                        <p class="modal-subtitle">${p.cat}</p>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-project-image"><img src="${p.img}" alt="${p.title}" loading="lazy"></div>
+                        <div class="modal-stats">${statsHTML}</div>
+                        <div class="modal-section"><h3>Overview</h3><p>${extra.d}</p></div>
+                    </div>
+                    <div class="modal-cta">
+                        <div class="modal-cta-text"><h4>Like what you see?</h4><p>Get in touch about a project like this one.</p></div>
+                        <a href="#contact" class="btn-primary" id="projectModalCTA">Start a Project →</a>
+                    </div>
+                `;
+
+                if (projectModalContentEl) projectModalContentEl.scrollTop = 0;
+                projectModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+
+                const ctaBtn = document.getElementById('projectModalCTA');
+                if (ctaBtn) ctaBtn.addEventListener('click', closeProjectModal);
+            }
+
+            function closeProjectModal() {
+                projectModal.classList.remove('active');
+                document.body.style.overflow = '';
+                setTimeout(() => { projectModalInner.innerHTML = ''; }, 350);
+            }
+
+            projectModalClose?.addEventListener('click', closeProjectModal);
+            projectModalBackdrop?.addEventListener('click', closeProjectModal);
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && projectModal?.classList.contains('active')) closeProjectModal();
+            });
+
+            function positionCard(item) {
+                const rx = stage.clientWidth * 0.38;
+                const ry = stage.clientHeight * 0.34;
+                const angle = item.baseAngle + rotation;
+                const x = rx * Math.cos(angle);
+                const y = ry * Math.sin(angle);
+                const depth = Math.sin(angle);
+                const front = (depth + 1) / 2;
+                const scale = 0.75 + front * 0.4;
+                const MAX_TILT = 22;
+                const rotY = Math.sin(angle) * MAX_TILT;
+                item.el.style.transform = `translate(-50%,-50%) translate(${x}px, ${y}px) rotateY(${rotY.toFixed(1)}deg) scale(${scale})`;
+                const zBucket = Math.round(front * 20);
+                if (item.zBucket !== zBucket) { item.zBucket = zBucket; item.el.style.zIndex = zBucket * 10; }
+                const opBucket = Math.round((0.72 + front * 0.28) * 20) / 20;
+                if (item.opBucket !== opBucket) { item.opBucket = opBucket; item.el.style.opacity = opBucket; }
+            }
+
+            function sizeOrbitTrack() {
+                const w = stage.clientWidth * 0.86;
+                const h = stage.clientHeight * 0.78;
+                track.style.width = w + 'px';
+                track.style.height = h + 'px';
+                track.style.transform = 'translate(-50%,-50%)';
+            }
+
+            function positionLabel(item) {
+                const rx = stage.clientWidth * 0.485;
+                const ry = stage.clientHeight * 0.485;
+                const angle = item.baseAngle + rotation;
+                const x = rx * Math.cos(angle);
+                const y = ry * Math.sin(angle);
+                item.el.style.left = `calc(50% + ${x}px)`;
+                item.el.style.top = `calc(50% + ${y}px)`;
+                item.el.style.transform = 'translate(-50%,-50%)';
+            }
+
+            let lastTime = performance.now();
+            function tick(now) {
+                const dt = (now - lastTime) / 1000;
+                lastTime = now;
+                if (inView) {
+                    if (!paused && !dragging) rotation += AUTO_SPEED * dt;
+                    cards.forEach(positionCard);
+                    labels.forEach(positionLabel);
+                }
+                requestAnimationFrame(tick);
+            }
+
+            function startDrag(clientX) { dragging = true; dragStartX = clientX; dragStartRotation = rotation; stage.style.cursor = 'grabbing'; }
+            function moveDrag(clientX) { if (!dragging) return; rotation = dragStartRotation + (clientX - dragStartX) * 0.005; }
+            function endDrag() { dragging = false; stage.style.cursor = 'grab'; }
+
+            stage.style.cursor = 'grab';
+            stage.addEventListener('mousedown', e => startDrag(e.clientX));
+            window.addEventListener('mousemove', e => moveDrag(e.clientX));
+            window.addEventListener('mouseup', endDrag);
+            stage.addEventListener('touchstart', e => { paused = true; startDrag(e.touches[0].clientX); }, { passive: true });
+            stage.addEventListener('touchmove', e => moveDrag(e.touches[0].clientX), { passive: true });
+            stage.addEventListener('touchend', () => { endDrag(); paused = false; });
+
+            resetBtn?.addEventListener('click', () => { activeCat = null; buildLabels(); buildCards(); });
+            window.addEventListener('resize', () => { buildCards(); buildLabels(); sizeOrbitTrack(); });
+
+            // Pause the RAF loop entirely when the gallery is off-screen,
+            // so it never competes with the rest of the page's animations.
+            new IntersectionObserver((entries) => {
+                entries.forEach(entry => { inView = entry.isIntersecting; });
+            }, { threshold: 0.05 }).observe(stage);
+
+            buildCards();
+            buildLabels();
+            sizeOrbitTrack();
+            requestAnimationFrame(tick);
+        })();
+
+        // =========================================
+        // 12. MAGNETIC BUTTONS — CTA pull toward cursor
+        // =========================================
+        (function initMagneticButtons() {
+            const FINE = window.matchMedia('(pointer: fine)').matches;
+            const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (!FINE || REDUCE) return;
+
+            document.querySelectorAll('.btn-primary, .btn-outline').forEach(btn => {
+                btn.style.willChange = 'transform';
+                btn.style.transition = 'transform 0.25s var(--ease-out)';
+
+                btn.addEventListener('pointermove', (e) => {
+                    const r = btn.getBoundingClientRect();
+                    const x = (e.clientX - r.left - r.width / 2) * 0.28;
+                    const y = (e.clientY - r.top - r.height / 2) * 0.4;
+                    btn.style.transform = `translate(${x}px, ${y}px)`;
+                });
+                btn.addEventListener('pointerleave', () => {
+                    btn.style.transform = 'translate(0, 0)';
+                });
+            });
+        })();
+
+        // =========================================
+        // 13. HEADING SPLIT REVEAL — words rise in on scroll
+        // =========================================
+        (function initSplitTitles() {
+            const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            document.querySelectorAll('.section-title').forEach(el => {
+                const words = el.textContent.trim().split(/\s+/);
+                el.innerHTML = '';
+                words.forEach((word, i) => {
+                    const outer = document.createElement('span');
+                    outer.className = 'split-word';
+                    const inner = document.createElement('span');
+                    inner.className = 'split-inner';
+                    inner.textContent = word;
+                    if (!REDUCE) inner.style.transitionDelay = (i * 0.05) + 's';
+                    outer.appendChild(inner);
+                    el.appendChild(outer);
+                    el.appendChild(document.createTextNode(' '));
+                });
+            });
+
+            if (REDUCE) {
+                document.querySelectorAll('.section-title').forEach(el => el.classList.add('in-view'));
+                return;
+            }
+
+            const splitObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        splitObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2, rootMargin: "0px 0px -50px 0px" });
+
+            document.querySelectorAll('.section-title').forEach(el => splitObserver.observe(el));
+        })();
+    </script>
+</body>
+</html>
