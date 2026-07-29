@@ -46,11 +46,13 @@
             font-family: var(--sans);
             background-color: var(--bg);
             color: var(--text);
-            line-height: 1.6;
+            line-height: 1.7;
             transition: background-color 0.4s ease, color 0.4s ease;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            font-size: 16px;
+            text-rendering: optimizeLegibility;
         }
 
         body.loading { overflow: hidden; height: 100vh; }
@@ -65,7 +67,21 @@
             z-index: 9998;
         }
 
-        h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; }
+        h1, h2, h3, h4 {
+            font-family: var(--serif);
+            font-weight: 400;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            text-wrap: balance;
+        }
+
+        p {
+            line-height: 1.75;
+            letter-spacing: -0.01em;
+            max-width: 65ch;
+            text-wrap: balance;
+        }
+
         a { color: inherit; text-decoration: none; transition: color 0.3s ease; }
         img { max-width: 100%; display: block; }
         button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
@@ -442,6 +458,8 @@
             font-size: clamp(3.5rem, 10vw, 8rem);
             font-weight: 300;
             margin-bottom: 2rem;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
             opacity: 0;
             transform: translateY(40px);
             animation: revealText 1.2s var(--ease-out) 2.6s forwards;
@@ -453,8 +471,12 @@
         }
 
         .hero-desc {
-            font-size: 1.25rem; max-width: 600px; margin-bottom: 3rem;
+            font-size: 1.25rem; 
+            max-width: 60ch; 
+            margin-bottom: 3rem;
             color: var(--text-muted);
+            line-height: 1.75;
+            letter-spacing: -0.01em;
             opacity: 0; animation: revealText 1.2s var(--ease-out) 2.9s forwards;
         }
 
@@ -497,8 +519,19 @@
             font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em;
             color: var(--accent); font-weight: 600; margin-bottom: 1.5rem; display: block;
         }
-        .section-title { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1.5rem; }
-        .section-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; }
+        .section-title { 
+            font-size: clamp(2.5rem, 5vw, 4rem); 
+            margin-bottom: 1.5rem; 
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+        }
+        .section-desc { 
+            font-size: 1.1rem; 
+            color: var(--text-muted); 
+            max-width: 60ch; 
+            line-height: 1.75;
+            letter-spacing: -0.01em;
+        }
 
         /* =========================================
            ABOUT & STATS
@@ -523,8 +556,22 @@
             display: grid; grid-template-columns: repeat(2, 1fr);
             gap: 2rem; margin-top: 4rem; border-top: 1px solid var(--border); padding-top: 3rem;
         }
-        .stat-num { font-family: var(--serif); font-size: 3rem; font-weight: 300; display: block; margin-bottom: 0.5rem; }
-        .stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+        .stat-num { 
+            font-family: var(--serif); 
+            font-size: 3rem; 
+            font-weight: 300; 
+            display: block; 
+            margin-bottom: 0.5rem; 
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+        .stat-label { 
+            font-size: 0.85rem; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+            line-height: 1.6;
+        }
 
         /* =========================================
            CAPABILITIES
@@ -534,7 +581,12 @@
             display: flex; justify-content: space-between; align-items: center;
             padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);
         }
-        .cap-name { font-family: var(--serif); font-size: 1.5rem; }
+        .cap-name { 
+            font-family: var(--serif); 
+            font-size: 1.5rem; 
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
         .cap-bar { flex: 1; margin: 0 2rem; height: 2px; background: var(--border); position: relative; overflow: hidden; }
         .cap-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--accent); width: 0; transition: width 1.5s var(--ease-out); }
         .cap-percent { font-size: 0.9rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
@@ -592,8 +644,10 @@
         .service-card .service-desc {
             font-size: 0.95rem;
             color: var(--text-muted);
-            line-height: 1.6;
+            line-height: 1.75;
+            letter-spacing: -0.01em;
             margin-bottom: 2rem;
+            max-width: 60ch;
         }
         .service-card .service-footer {
             display: flex;
@@ -786,8 +840,20 @@
             font-family: var(--serif); font-size: 4rem; font-weight: 300;
             color: var(--accent); opacity: 0.3; line-height: 1; margin-bottom: 1.5rem;
         }
-        .process-title { font-family: var(--serif); font-size: 1.5rem; margin-bottom: 1rem; }
-        .process-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; }
+        .process-title { 
+            font-family: var(--serif); 
+            font-size: 1.5rem; 
+            margin-bottom: 1rem; 
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+        .process-desc { 
+            font-size: 0.95rem; 
+            color: var(--text-muted); 
+            line-height: 1.75; 
+            letter-spacing: -0.01em;
+            max-width: 60ch;
+        }
 
         /* =========================================
            TESTIMONIALS
@@ -800,7 +866,15 @@
         }
         .testimonial-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
         .stars { color: #D97757; letter-spacing: 2px; }
-        .quote { font-family: var(--serif); font-size: 1.2rem; font-style: italic; line-height: 1.5; flex: 1; }
+        .quote { 
+            font-family: var(--serif); 
+            font-size: 1.2rem; 
+            font-style: italic; 
+            line-height: 1.6; 
+            flex: 1; 
+            letter-spacing: -0.01em;
+            max-width: 60ch;
+        }
         .client-info { display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
         .client-avatar {
             width: 48px; height: 48px; border-radius: 50%; background: var(--bg-alt);
@@ -923,8 +997,20 @@
 
         footer { padding: 4rem 0; border-top: 1px solid var(--border); margin-top: 4rem; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
-        .footer-logo { font-family: var(--serif); font-size: 2rem; margin-bottom: 1rem; }
-        .footer-desc { font-size: 0.9rem; color: var(--text-muted); max-width: 300px; }
+        .footer-logo { 
+            font-family: var(--serif); 
+            font-size: 2rem; 
+            margin-bottom: 1rem; 
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+        .footer-desc { 
+            font-size: 0.9rem; 
+            color: var(--text-muted); 
+            max-width: 60ch; 
+            line-height: 1.75;
+            letter-spacing: -0.01em;
+        }
         .footer-col h4 { font-family: var(--sans); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 600; }
         .footer-col a { display: block; margin-bottom: 0.8rem; font-size: 0.95rem; }
         .footer-col a:hover { color: var(--accent); }
@@ -1063,9 +1149,11 @@
         }
         .modal-section p {
             font-size: 1rem;
-            line-height: 1.7;
+            line-height: 1.75;
+            letter-spacing: -0.01em;
             color: var(--text);
             margin-bottom: 1rem;
+            max-width: 60ch;
         }
         .modal-list {
             list-style: none;
@@ -1137,10 +1225,15 @@
             font-family: var(--serif);
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
         }
         .modal-cta-text p {
             font-size: 0.9rem;
             color: var(--text-muted);
+            line-height: 1.75;
+            letter-spacing: -0.01em;
+            max-width: 60ch;
         }
 
         /* =========================================
