@@ -389,7 +389,7 @@
             position: fixed;
             top: 96px;
             left: 50%;
-            transform: translateX(-50%) translateY(-10px);
+            transform: translateX(-50%) translateY(-20px);
             width: calc(100% - 32px);
             max-width: 400px;
             background: var(--card);
@@ -399,7 +399,7 @@
             z-index: 999;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s var(--ease-out);
+            transition: opacity 0.4s var(--ease-out), visibility 0.4s var(--ease-out), transform 0.4s var(--ease-out);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
         }
         .mobile-nav.active {
@@ -409,21 +409,37 @@
         }
         .mobile-nav a {
             display: block;
-            padding: 14px 16px;
-            font-size: 1rem;
+            padding: 16px 18px;
+            font-size: 1.05rem;
             font-weight: 500;
             color: var(--text-muted);
             border-radius: 12px;
-            transition: all 0.2s ease;
-            margin-bottom: 4px;
+            transition: transform 0.3s var(--ease-out), opacity 0.3s var(--ease-out), background 0.2s ease;
+            margin-bottom: 6px;
+            opacity: 0;
+            transform: translateY(-10px);
         }
-        .mobile-nav a:hover, .mobile-nav a.active {
+        .mobile-nav.active a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .mobile-nav.active a:nth-child(1) { transition-delay: 0.05s; }
+        .mobile-nav.active a:nth-child(2) { transition-delay: 0.1s; }
+        .mobile-nav.active a:nth-child(3) { transition-delay: 0.15s; }
+        .mobile-nav.active a:nth-child(4) { transition-delay: 0.2s; }
+        .mobile-nav.active a:nth-child(5) { transition-delay: 0.25s; }
+        .mobile-nav.active a:nth-child(6) { transition-delay: 0.3s; }
+        .mobile-nav.active a:nth-child(7) { transition-delay: 0.35s; }
+        .mobile-nav.active a:nth-child(8) { transition-delay: 0.4s; }
+        .mobile-nav a:hover {
             background: var(--bg-alt);
             color: var(--text);
+            transform: translateY(-2px);
         }
         .mobile-nav a.active {
             background: var(--text);
             color: var(--bg);
+            transform: scale(1.02);
         }
         [data-theme="dark"] .mobile-nav a.active {
             background: var(--accent);
@@ -1984,9 +2000,19 @@
         // =========================================
         const menuToggle = document.getElementById('menuToggle');
         const mobileNav = document.getElementById('mobileNav');
+        const mobileNavLinks = mobileNav.querySelectorAll('a');
+        
         menuToggle.addEventListener('click', () => {
             menuToggle.classList.toggle('active');
             mobileNav.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking a link
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.remove('active');
+                menuToggle.classList.remove('active');
+            });
         });
 
         document.addEventListener('click', (e) => {
