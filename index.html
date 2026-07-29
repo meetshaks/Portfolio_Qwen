@@ -249,6 +249,20 @@
         }
         [data-theme="dark"] .nav-links { background: rgba(255, 255, 255, 0.04); }
         
+        /* Animated Active Indicator */
+        .nav-indicator {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            height: calc(100% - 8px);
+            background: var(--text);
+            border-radius: 100px;
+            transition: transform 0.4s var(--ease-out), width 0.4s var(--ease-out);
+            z-index: 0;
+            pointer-events: none;
+        }
+        [data-theme="dark"] .nav-indicator { background: var(--accent); }
+        
         .nav-links a {
             position: relative;
             font-size: 0.88rem;
@@ -258,6 +272,7 @@
             color: var(--text-muted);
             transition: color 0.3s ease, transform 0.3s var(--ease-out);
             white-space: nowrap;
+            z-index: 1;
         }
         .nav-links a:hover {
             color: var(--text);
@@ -265,12 +280,9 @@
         }
         .nav-links a.active {
             color: var(--bg);
-            background: var(--text);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         [data-theme="dark"] .nav-links a.active {
             color: #121212;
-            background: var(--accent);
         }
 
         .nav-right { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
@@ -1312,6 +1324,7 @@
     <nav class="nav" id="nav">
         <a href="#home" class="nav-logo">Pallab Sarkar</a>
         <div class="nav-links" id="navLinks">
+            <div class="nav-indicator" id="navIndicator"></div>
             <a href="#home" class="active" data-section="home">Home</a>
             <a href="#about" data-section="about">About</a>
             <a href="#services" data-section="services">Services</a>
@@ -1867,12 +1880,27 @@
         const navLinksDesktop = document.querySelectorAll('#navLinks a[data-section]');
         const navLinksMobile = document.querySelectorAll('#mobileNav a[data-section]');
         const allNavLinks = [...navLinksDesktop, ...navLinksMobile];
+        const navIndicator = document.getElementById('navIndicator');
 
         // Track which sections are currently visible
         const sectionVisibility = new Map();
         
         // Ordered list of nav sections for priority-based active detection
         const sectionOrder = ['home', 'about', 'capabilities', 'services', 'work', 'gallery', 'process', 'testimonials', 'background', 'faq', 'investment', 'contact'];
+
+        function updateNavIndicator(activeId) {
+            const activeLink = document.querySelector(`#navLinks a[data-section="${activeId}"]`);
+            if (!activeLink || !navIndicator) return;
+            
+            const linkRect = activeLink.getBoundingClientRect();
+            const containerRect = document.getElementById('navLinks').getBoundingClientRect();
+            
+            const leftPosition = linkRect.left - containerRect.left;
+            const width = linkRect.width;
+            
+            navIndicator.style.transform = `translateX(${leftPosition}px)`;
+            navIndicator.style.width = `${width}px`;
+        }
 
         const activeNavObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1901,6 +1929,9 @@
                 allNavLinks.forEach(link => {
                     link.classList.toggle('active', link.getAttribute('data-section') === navActiveId);
                 });
+                
+                // Update the animated indicator position
+                updateNavIndicator(navActiveId);
             }
         }, {
             // Trigger when section is in the top 40% of the viewport
@@ -1909,6 +1940,11 @@
         });
 
         sections.forEach(section => activeNavObserver.observe(section));
+        
+        // Initialize indicator position on load
+        setTimeout(() => {
+            updateNavIndicator('home');
+        }, 100);
 
         // Close mobile nav on link click
         navLinksMobile.forEach(link => {
@@ -1934,6 +1970,14 @@
                 ticking = true;
             }
         }, { passive: true });
+        
+        // Update indicator on resize
+        window.addEventListener('resize', () => {
+            const activeLink = document.querySelector('#navLinks a.active');
+            if (activeLink) {
+                updateNavIndicator(activeLink.getAttribute('data-section'));
+            }
+        });
 
         // =========================================
         // 5. MOBILE MENU
